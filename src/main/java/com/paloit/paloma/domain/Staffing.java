@@ -55,6 +55,13 @@ public class Staffing {
      */
     @Column(name = "AVERAGE_DAILY_RATE", length =5)
     private Long averageDailyRate;
+    
+    /**
+     * Document to fill for consultant in mission.
+     */
+    @Column(name = "ID_STAFFING_DOC", length =100)
+    private String idStaffingDoc;
+    
     /**
      * The marketing.
      */
@@ -159,6 +166,20 @@ public class Staffing {
 	public void setProfile(Profile profile) {
 		this.profile = profile;
 	}
+	/**
+	 * @return the idStaffingDoc
+	 */
+	public String getIdStaffingDoc() {
+		return idStaffingDoc;
+	}
+	/**
+	 * @param idStaffingDoc the idStaffingDoc to set
+	 */
+	public void setIdStaffingDoc(String idStaffingDoc) {
+		this.idStaffingDoc = idStaffingDoc;
+	}
+	
+	
     
     
 }
