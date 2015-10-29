@@ -7,17 +7,25 @@
 		<property name="hibernate.bytecode.use_reflection_optimizer">false</property>
 		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
 		<property name="hibernate.connection.password">root</property>
-		<property name="hibernate.connection.url">jdbc:mysql://localhost:8080/intranet_dev</property> 
+		<property name="hibernate.connection.url">jdbc:mysql://localhost:8080/paloma</property> 
 		<property name="hibernate.connection.username">root</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
 		<property name="show_sql">true</property>
 <!-- 		<property name="hibernate.hbm2ddl.auto">create</property> -->
-		<property name="hibernate.default_entity_mode">dynamic-map</property>
 		<property name="current_session_context_class">thread</property>
-		<mapping class="com.paloit.paloma.bean.ProfilesContacts" />
-
-
+		<property name="hibernate.hbm2ddl.auto">create-drop</property>
+		<mapping class="com.paloit.paloma.domain.Contact" />
+		<mapping class="com.paloit.paloma.domain.Contract" />
+		<mapping class="com.paloit.paloma.domain.Country" />
+		<mapping class="com.paloit.paloma.domain.Interview" />
+		<mapping class="com.paloit.paloma.domain.Language" />
+		<mapping class="com.paloit.paloma.domain.Office" />
+		<mapping class="com.paloit.paloma.domain.Profile" />
+		<mapping class="com.paloit.paloma.domain.ProfileLanguage" />
+		<mapping class="com.paloit.paloma.domain.Skill" />
+		<mapping class="com.paloit.paloma.domain.Source" />
+		<mapping class="com.paloit.paloma.domain.Staffing" />
+		<mapping class="com.paloit.paloma.domain.User" />
+		<mapping class="com.paloit.paloma.domain.UserStatus" />
 	</session-factory>
-
-
 </hibernate-configuration>
