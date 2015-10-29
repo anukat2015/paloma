@@ -31,25 +31,46 @@ public class Contact {
     @Column(name = "ID_CONTACT", length = 10)
 	private Long id;
     
+    /**
+     * Phone number.
+     */
     @Column(name = "PHONE_NUMBER", length = 20)
     private String phoneNumber;
     
+    /**
+     * Email
+     */
     @Column(name = "EMAIL", length = 100)
     private String email;
     
+    /**
+     * Professional email.
+     */
     @Column(name = "PRO_EMAIL", length = 100)
     private String proEmail;
     
+    /**
+     * Country.
+     */
     @ManyToOne
     @JoinColumn(name = "ID_COUNTRY")
     private Country country;
     
+    /**
+     * City.
+     */
     @Column(name = "CITY", length = 50)
     private String city;
     
+    /**
+     * Address.
+     */
     @Column(name = "ADDRESS", length = 100)
     private String address;
     
+    /**
+     * Zip.
+     */
     @Column(name = "ZIP", length = 20)
     private String zip;
 
