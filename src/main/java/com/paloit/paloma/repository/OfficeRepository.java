@@ -12,4 +12,11 @@ import com.paloit.paloma.domain.Office;
  */
 public interface OfficeRepository extends JpaRepository<Office, Long>,JpaSpecificationExecutor<Office>{
 
+	/**
+	 * Find office by title.
+	 * @param title
+	 * @return
+	 */
+	Office findByTitle(String title);
+
 }

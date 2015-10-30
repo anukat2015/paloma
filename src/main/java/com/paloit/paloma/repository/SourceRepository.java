@@ -3,20 +3,20 @@ package com.paloit.paloma.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-import com.paloit.paloma.domain.Skill;
+import com.paloit.paloma.domain.Source;
 
 /**
- * Skill repository.
+ * Source repository.
  * @author DTRANG
  *
  */
-public interface SkillRepository extends JpaRepository<Skill, Long>,JpaSpecificationExecutor<Skill>{
+public interface SourceRepository extends JpaRepository<Source, Long>,JpaSpecificationExecutor<Source>{
 
 	/**
-	 * Find the skill by title.
+	 * Find source by title.
 	 * @param title
 	 * @return
 	 */
-	 Skill findByTitle(String title);
+	Source findByTitle(String title);
 
 }

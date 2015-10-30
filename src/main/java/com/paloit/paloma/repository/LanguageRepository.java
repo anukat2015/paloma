@@ -12,4 +12,11 @@ import com.paloit.paloma.domain.Language;
  */
 public interface LanguageRepository extends JpaRepository<Language, Long>,JpaSpecificationExecutor<Language>{
 
+	/**
+	 * Find language by title.
+	 * @param title
+	 * @return
+	 */
+	Language findByTitle(String title);
+
 }

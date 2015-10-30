@@ -7,4 +7,11 @@ import com.paloit.paloma.domain.Country;
 
 public interface CountryRepository extends JpaRepository<Country, Long>,JpaSpecificationExecutor<Country>{
 
+	/**
+	 * Find country by title.
+	 * @param title
+	 * @return
+	 */
+	Country findByTitle(String title);
+
 }
