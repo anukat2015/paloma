@@ -25,10 +25,6 @@ import com.paloit.paloma.utils.enums.StaffingStatus;
 import com.paloit.paloma.utils.enums.StatusRecruitment;
 import com.paloit.paloma.utils.enums.TypeSourcing;
 
-/**
- * Profile.
- * Created by Yu on 27/10/2015.
- */
 @Entity
 @Table(name="PROFILE")
 public class Profile {
