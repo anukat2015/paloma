@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -60,6 +62,15 @@ public class User {
      */
 	@Column(name = "IS_BANNED")
     private Boolean isBanned;
+	
+	/**
+	 * User right.
+	 */
+	@ManyToOne
+	@JoinColumn(name = "ID_USER_STATUS")
+	private UserStatus userStatus;
+	
+	
 	/**
 	 * @return the id
 	 */
@@ -144,6 +155,19 @@ public class User {
 	public void setIsBanned(Boolean isBanned) {
 		this.isBanned = isBanned;
 	}
+	/**
+	 * @return the userStatus
+	 */
+	public UserStatus getUserStatus() {
+		return userStatus;
+	}
+	/**
+	 * @param userStatus the userStatus to set
+	 */
+	public void setUserStatus(UserStatus userStatus) {
+		this.userStatus = userStatus;
+	}
 
+	
    
 }
