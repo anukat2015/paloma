@@ -12,4 +12,5 @@ import com.paloit.paloma.domain.User;
  */
 public interface UserRepository extends JpaRepository<User, Long>,JpaSpecificationExecutor<User>{
 
+	User findByEmail(String email); 
 }
