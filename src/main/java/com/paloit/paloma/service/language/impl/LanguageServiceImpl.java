@@ -55,6 +55,10 @@ public class LanguageServiceImpl implements LanguageService{
 		List<Language> languages = languageRepository.findAll();
 		return languages;
 	}
+
+	public void delete(Long id) {
+		languageRepository.delete(id);		
+	}
 		
 
 	

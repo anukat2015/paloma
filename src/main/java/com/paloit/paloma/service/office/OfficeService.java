@@ -36,4 +36,10 @@ public interface OfficeService {
 	 * @return
 	 */
 	public List<Office> findAll();
+	
+	/**
+	 * Remove every records corresponding to the parameter.
+	 * @param id
+	 */
+	public void delete(Long id);
 }

@@ -55,6 +55,10 @@ public class SourceServiceImpl implements SourceService{
 		return sources;
 	}
 
+	public void delete(Long id) {
+		sourceRepository.delete(id);
+	}
+
 	
 
 

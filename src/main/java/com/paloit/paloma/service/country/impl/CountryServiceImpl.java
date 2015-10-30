@@ -54,10 +54,9 @@ public class CountryServiceImpl implements CountryService{
 		List<Country> countries = countryRepository.findAll();
 		return countries;
 	}
-		
 
-	
-
-	
+	public void delete(Long id) {
+		countryRepository.delete(id);
+	}
 
 }

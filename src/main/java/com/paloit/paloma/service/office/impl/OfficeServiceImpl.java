@@ -56,6 +56,10 @@ public class OfficeServiceImpl implements OfficeService{
 		List<Office> offices = officeRepository.findAll();
 		return offices;
 	}
+
+	public void delete(Long id) {
+		officeRepository.delete(id);
+	}
 		
 
 	

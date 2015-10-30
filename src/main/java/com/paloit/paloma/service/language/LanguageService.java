@@ -36,4 +36,10 @@ public interface LanguageService {
 	 * @return
 	 */
 	public List<Language> findAll();
+	
+	/**
+	 * Remove every records corresponding to the parameter.
+	 * @param id
+	 */
+	public void delete(Long id);
 }

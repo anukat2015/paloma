@@ -36,4 +36,11 @@ public interface SourceService {
 	 * @return
 	 */
 	public List<Source> findAll();
-}
+	
+	/**
+	 * Remove every records corresponding to the parameter.
+	 * @param id
+	 */
+	public void delete(Long id);
+	
+}	

@@ -37,4 +37,10 @@ public interface CountryService {
 	 */
 	public List<Country> findAll();
 	
+	/**
+	 * Remove every records corresponding to the parameter.
+	 * @param id
+	 */
+	public void delete(Long id);
+	
 }
