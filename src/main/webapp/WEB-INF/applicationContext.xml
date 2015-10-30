@@ -42,4 +42,6 @@
 			<value>classpath:META-INF/persistence.xml</value>
 		</property>
 	</bean>
+	
+	<jpa:repositories base-package="com.paloit.paloma.repository" />
 </beans>
