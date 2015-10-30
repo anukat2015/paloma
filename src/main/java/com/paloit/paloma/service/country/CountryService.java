@@ -1,5 +1,7 @@
 package com.paloit.paloma.service.country;
 
+import java.util.List;
+
 import com.paloit.paloma.domain.Country;
 
 /**
@@ -28,5 +30,11 @@ public interface CountryService {
 	 * @return
 	 */
 	public Country findCountry(String title);
+	
+	/**
+	 * Retrieve every records.
+	 * @return
+	 */
+	public List<Country> findAll();
 	
 }

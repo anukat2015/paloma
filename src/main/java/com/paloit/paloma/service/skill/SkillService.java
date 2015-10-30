@@ -1,5 +1,7 @@
 package com.paloit.paloma.service.skill;
 
+import java.util.List;
+
 import com.paloit.paloma.domain.Skill;
 
 /**
@@ -29,4 +31,9 @@ public interface SkillService {
 	 */
 	public Skill findSkill(String title);
 	
+	/**
+	 * Retrieve every records.
+	 * @return
+	 */
+	public List<Skill> findAll();
 }

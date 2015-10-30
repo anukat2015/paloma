@@ -1,5 +1,7 @@
 package com.paloit.paloma.service.source;
 
+import java.util.List;
+
 import com.paloit.paloma.domain.Source;
 
 /**
@@ -29,4 +31,9 @@ public interface SourceService {
 	 */
 	public Source findSource(String title);
 	
+	/**
+	 * Retrieve every records.
+	 * @return
+	 */
+	public List<Source> findAll();
 }

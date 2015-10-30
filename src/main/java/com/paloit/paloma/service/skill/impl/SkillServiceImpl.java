@@ -1,5 +1,7 @@
 package com.paloit.paloma.service.skill.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,6 +48,12 @@ public class SkillServiceImpl implements SkillService{
 		
 		Skill skill = skillRepository.findByTitle(title);	
 		return skill;
+	}
+
+	public List<Skill> findAll() {
+		
+		List<Skill> skills = skillRepository.findAll();
+		return skills;
 	}
 		
 

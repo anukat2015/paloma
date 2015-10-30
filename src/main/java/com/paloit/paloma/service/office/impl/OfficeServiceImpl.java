@@ -1,5 +1,7 @@
 package com.paloit.paloma.service.office.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +49,12 @@ public class OfficeServiceImpl implements OfficeService{
 		Office office = officeRepository.findByTitle(title);				
 		return office;
 		
+	}
+
+	public List<Office> findAll() {
+		
+		List<Office> offices = officeRepository.findAll();
+		return offices;
 	}
 		
 

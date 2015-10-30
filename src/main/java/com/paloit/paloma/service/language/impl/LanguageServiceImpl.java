@@ -1,5 +1,7 @@
 package com.paloit.paloma.service.language.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +49,11 @@ public class LanguageServiceImpl implements LanguageService{
 		Language language = languageRepository.findByTitle(title);		
 		return language;
 		
+	}
+
+	public List<Language> findAll() {
+		List<Language> languages = languageRepository.findAll();
+		return languages;
 	}
 		
 

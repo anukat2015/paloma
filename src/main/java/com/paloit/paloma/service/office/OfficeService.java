@@ -1,5 +1,7 @@
 package com.paloit.paloma.service.office;
 
+import java.util.List;
+
 import com.paloit.paloma.domain.Office;
 
 /**
@@ -29,4 +31,9 @@ public interface OfficeService {
 	 */
 	public Office findOffice(String title);
 	
+	/**
+	 * Retrieve every records.
+	 * @return
+	 */
+	public List<Office> findAll();
 }

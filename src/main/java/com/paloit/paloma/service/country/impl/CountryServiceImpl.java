@@ -1,5 +1,7 @@
 package com.paloit.paloma.service.country.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,6 +48,11 @@ public class CountryServiceImpl implements CountryService{
 		Country country = countryRepository.findByTitle(title);		
 		
 		return country;
+	}
+
+	public List<Country> findAll() {
+		List<Country> countries = countryRepository.findAll();
+		return countries;
 	}
 		
 

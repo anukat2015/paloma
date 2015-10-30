@@ -1,5 +1,7 @@
 package com.paloit.paloma.service.source.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +49,13 @@ public class SourceServiceImpl implements SourceService{
 		Source source = sourceRepository.findByTitle(title);	
 		return source;
 	}
+
+	public List<Source> findAll() {
+		List<Source> sources = sourceRepository.findAll();
+		return sources;
+	}
+
+	
 
 
 	

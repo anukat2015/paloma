@@ -12,4 +12,11 @@ import com.paloit.paloma.domain.UserStatus;
  */
 public interface UserStatusRepository extends JpaRepository<UserStatus, Long>,JpaSpecificationExecutor<UserStatus>{
 
+	/**
+	 * Find user status by title.
+	 * @param title
+	 * @return
+	 */
+	UserStatus findByTitle(String title);
+
 }

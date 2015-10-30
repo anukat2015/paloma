@@ -1,5 +1,7 @@
 package com.paloit.paloma.service.language;
 
+import java.util.List;
+
 import com.paloit.paloma.domain.Language;
 
 /**
@@ -29,4 +31,9 @@ public interface LanguageService {
 	 */
 	public Language findLanguage(String title);
 	
+	/**
+	 * Retrieve every records.
+	 * @return
+	 */
+	public List<Language> findAll();
 }
