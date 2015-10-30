@@ -46,11 +46,7 @@
 			<value>org.hibernate.ejb.HibernatePersistence</value>
 		</property>
 		<property name="persistenceXmlLocation">
-			<value>classpath:persistence.xml</value>
+			<value>classpath:META-INF/persistence.xml</value>
 		</property>
-    </bean>
-
-    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-        <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
 </beans>
