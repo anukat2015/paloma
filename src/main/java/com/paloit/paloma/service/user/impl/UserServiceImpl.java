@@ -8,6 +8,7 @@ import com.paloit.paloma.domain.User;
 import com.paloit.paloma.domain.UserStatus;
 import com.paloit.paloma.repository.UserRepository;
 import com.paloit.paloma.service.user.UserService;
+import com.paloit.paloma.utils.CustomStringUtils;
 
 /**
  * Implemented user service.
@@ -28,7 +29,7 @@ public class UserServiceImpl implements UserService{
 			user.setEmail(email);
 			user.setFirstName(firstname);
 			user.setLastName(lastname);
-			user.setPassword(password);
+			user.setPassword(CustomStringUtils.encryptMd5(password));
 			user.setIsBanned(false);
 			user.setCreatedDate(Calendar.getInstance().getTime());
 			user.setUserStatus(userStatus);
