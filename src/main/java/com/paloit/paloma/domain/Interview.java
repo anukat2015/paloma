@@ -44,7 +44,7 @@ public class Interview {
      * The responsible of the interview.
      */
     @ManyToOne
-    @JoinColumn(name = "USER_ID")
+    @JoinColumn(name = "ID_USER")
     private User user;
     
     /**
@@ -52,6 +52,10 @@ public class Interview {
      */
     @Column(name = "COMMENT", length = 255)
     private String comment;
+    
+    @ManyToOne
+    @JoinColumn(name="ID_PROFILE")
+    private Profile profile;
 
 	/**
 	 * @return the id

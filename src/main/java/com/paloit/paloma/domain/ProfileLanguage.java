@@ -3,6 +3,7 @@ package com.paloit.paloma.domain;
 
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -21,18 +22,10 @@ import com.paloit.paloma.utils.enums.LanguageLevel;
 public class ProfileLanguage {
 
 	/**
-	 * Profile.
+	 * Profile language.
 	 */
-	@ManyToOne
-	@JoinColumn(name="ID_PROFILE")
-    private Profile profile;
-	
-	/**
-	 * Language.
-	 */
-	@ManyToOne
-	@JoinColumn(name="ID_LANGUAGE")
-    private Language language;
+	@EmbeddedId
+	private ProfileLanguageId profileLanguageId;
 	
 	/**
 	 * Level.
@@ -40,42 +33,36 @@ public class ProfileLanguage {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "LEVEL")
     private LanguageLevel level;
+	
+
 	/**
-	 * @return the profile
+	 * @return the profileLanguageId
 	 */
-	public Profile getProfile() {
-		return profile;
+	public ProfileLanguageId getProfileLanguageId() {
+		return profileLanguageId;
 	}
+
 	/**
-	 * @param profile the profile to set
+	 * @param profileLanguageId the profileLanguageId to set
 	 */
-	public void setProfile(Profile profile) {
-		this.profile = profile;
+	public void setProfileLanguageId(ProfileLanguageId profileLanguageId) {
+		this.profileLanguageId = profileLanguageId;
 	}
-	/**
-	 * @return the language
-	 */
-	public Language getLanguage() {
-		return language;
-	}
-	/**
-	 * @param language the language to set
-	 */
-	public void setLanguage(Language language) {
-		this.language = language;
-	}
+
 	/**
 	 * @return the level
 	 */
 	public LanguageLevel getLevel() {
 		return level;
 	}
+
 	/**
 	 * @param level the level to set
 	 */
 	public void setLevel(LanguageLevel level) {
 		this.level = level;
 	}
+
     
     
 }

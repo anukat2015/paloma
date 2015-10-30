@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -65,10 +67,14 @@ public class Staffing {
     /**
      * The marketing.
      */
+    @ManyToOne
+    @JoinColumn(name = "ID_USER")
     private User user;
     /**
      * The profile related to the staffing.
      */
+    @ManyToOne
+    @JoinColumn(name = "ID_PROFILE")
     private Profile profile;
 	/**
 	 * @return the id

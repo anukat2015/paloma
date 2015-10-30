@@ -2,6 +2,7 @@ package com.paloit.paloma.domain;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -42,7 +43,7 @@ public class Language {
     /**
      * List of profile.
      */
-    @OneToMany(mappedBy="language")
+    @OneToMany(mappedBy="profileLanguageId.language" ,cascade=CascadeType.ALL)
     private List<ProfileLanguage> profileLanguages;
 	
     /**

@@ -195,12 +195,12 @@ public class Profile {
      * CAREER Historical.
      */
     @OneToMany(fetch=FetchType.LAZY, mappedBy = "profile")
-    private List<Staffing> staffingList;
+    private List<Staffing> staffings;
 
     /**
      * List of languages
      */
-    @OneToMany(mappedBy="profile")
+    @OneToMany(mappedBy="profileLanguageId.profile", cascade=CascadeType.ALL)
     private List<ProfileLanguage> profileLanguages;
     
     
@@ -573,18 +573,19 @@ public class Profile {
 		this.contract = contract;
 	}
 
+	
 	/**
-	 * @return the staffingList
+	 * @return the staffings
 	 */
-	public List<Staffing> getStaffingList() {
-		return staffingList;
+	public List<Staffing> getStaffings() {
+		return staffings;
 	}
 
 	/**
-	 * @param staffingList the staffingList to set
+	 * @param staffings the staffings to set
 	 */
-	public void setStaffingList(List<Staffing> staffingList) {
-		this.staffingList = staffingList;
+	public void setStaffings(List<Staffing> staffings) {
+		this.staffings = staffings;
 	}
 
 	/**

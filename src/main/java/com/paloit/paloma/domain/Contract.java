@@ -95,7 +95,7 @@ public class Contract {
     /**
      * End Date of contract.
      */
-    @Column(name="DATE_CONTRACT_BEGIN")
+    @Column(name="DATE_CONTRACT_END")
     private Date dateEnd;
     
     /**

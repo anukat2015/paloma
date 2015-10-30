@@ -73,6 +73,10 @@ public class Contact {
      */
     @Column(name = "ZIP", length = 20)
     private String zip;
+    
+    @ManyToOne
+    @JoinColumn(name = "ID_PROFILE")
+    private Profile profile;
 
 	/**
 	 * @return the id
