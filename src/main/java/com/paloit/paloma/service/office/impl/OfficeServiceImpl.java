@@ -2,12 +2,15 @@ package com.paloit.paloma.service.office.impl;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.paloit.paloma.domain.Office;
 import com.paloit.paloma.repository.OfficeRepository;
+import com.paloit.paloma.service.language.impl.LanguageServiceImpl;
 import com.paloit.paloma.service.office.OfficeService;
 
 /**
@@ -19,6 +22,11 @@ import com.paloit.paloma.service.office.OfficeService;
 @Transactional
 public class OfficeServiceImpl implements OfficeService{
 
+	/**
+	 * Log.
+	 */
+	private static final Logger logger = LogManager.getLogger(OfficeServiceImpl.class);
+	
 	/**
 	 * Office repository.
 	 */

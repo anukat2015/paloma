@@ -2,12 +2,15 @@ package com.paloit.paloma.service.country.impl;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.paloit.paloma.domain.Country;
 import com.paloit.paloma.repository.CountryRepository;
+import com.paloit.paloma.rest.ProfileResource;
 import com.paloit.paloma.service.country.CountryService;
 
 /**
@@ -19,6 +22,11 @@ import com.paloit.paloma.service.country.CountryService;
 @Transactional
 public class CountryServiceImpl implements CountryService{
 
+	/**
+	 * Log.
+	 */
+	private static final Logger logger = LogManager.getLogger(CountryServiceImpl.class);
+	
 	/**
 	 * Country repository.
 	 */

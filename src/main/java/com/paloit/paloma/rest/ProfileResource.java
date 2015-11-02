@@ -4,6 +4,9 @@ import com.paloit.paloma.dto.ContactDTO;
 import com.paloit.paloma.dto.RecruitmentDTO;
 import com.paloit.paloma.dto.SkillDTO;
 import com.paloit.paloma.dto.CareerDTO;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/app")
 public class ProfileResource {
 
+	/**
+	 * Log.
+	 */
+	private static final Logger logger = LogManager.getLogger(ProfileResource.class);
+	
 	/**
      *  method to create a profile.
      */
