@@ -16,13 +16,14 @@ import java.util.List;
 @RequestMapping("/app")
 public class StatisticInfoResource {
 
-    @RequestMapping(value = "/rest/homepage/getHomePageStatisticInfo",
+	/**
+     *  method to get statistic info for home page.
+     */
+    @RequestMapping(value = "/homepage/getHomePageStatisticInfo",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Integer> getHomePageStatisticInfo(){
-        /**
-         *  method to get statistic info for home page
-         */
+        
         List<Integer> list = new ArrayList<Integer>();
         return list;
     }

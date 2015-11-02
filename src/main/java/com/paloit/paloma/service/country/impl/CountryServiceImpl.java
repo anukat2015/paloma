@@ -46,7 +46,6 @@ public class CountryServiceImpl implements CountryService{
 
 	public Country findCountry(String title) {	
 		Country country = countryRepository.findByTitle(title);		
-		
 		return country;
 	}
 
