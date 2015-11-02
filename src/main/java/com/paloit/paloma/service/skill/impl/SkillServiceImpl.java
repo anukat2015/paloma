@@ -2,12 +2,15 @@ package com.paloit.paloma.service.skill.impl;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.paloit.paloma.domain.Skill;
 import com.paloit.paloma.repository.SkillRepository;
+import com.paloit.paloma.service.office.impl.OfficeServiceImpl;
 import com.paloit.paloma.service.skill.SkillService;
 
 /**
@@ -19,6 +22,11 @@ import com.paloit.paloma.service.skill.SkillService;
 @Transactional
 public class SkillServiceImpl implements SkillService{
 
+	/**
+	 * Log.
+	 */
+	private static final Logger logger = LogManager.getLogger(SkillServiceImpl.class);
+	
 	/**
 	 * Skill repository.
 	 */
