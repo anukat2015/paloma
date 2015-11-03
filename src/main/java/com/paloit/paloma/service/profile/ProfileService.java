@@ -6,6 +6,7 @@ import java.util.List;
 import com.paloit.paloma.domain.Contact;
 import com.paloit.paloma.domain.Profile;
 import com.paloit.paloma.dto.ContactDTO;
+import com.paloit.paloma.dto.SkillDTO;
 
 /**
  * Service profile.
@@ -15,7 +16,7 @@ import com.paloit.paloma.dto.ContactDTO;
 public interface ProfileService {
 	
 	/**
-	 * Create a profilein a contact.
+	 * Create a profile in a contact.
 	 * @param id
 	 * @return
 	 */
@@ -27,6 +28,14 @@ public interface ProfileService {
 	 * @return
 	 */
 	String updateContact(ContactDTO contactDTO);
+	
+	/**
+	 * Update the skills.
+	 * @param id
+	 * @param skillDTO
+	 * @return
+	 */
+	Profile updateSkill(Long id, SkillDTO skillDTO);
 	
 	/**
 	 * Find a profile with the same name and lastname.

@@ -19,6 +19,7 @@ import com.paloit.paloma.domain.Contact;
 import com.paloit.paloma.domain.Country;
 import com.paloit.paloma.domain.Profile;
 import com.paloit.paloma.dto.ContactDTO;
+import com.paloit.paloma.dto.SkillDTO;
 import com.paloit.paloma.repository.ContactRepository;
 import com.paloit.paloma.repository.CountryRepository;
 import com.paloit.paloma.repository.ProfileRepository;
@@ -148,6 +149,20 @@ public class ProfileServiceImpl implements ProfileService{
 		
 		Profile profile = profileRepository.findByFirstNameAndLastName(firstName, lastName);
 		return profile;
+	}
+	public Profile updateSkill(Long id, SkillDTO skillDTO) {
+		Profile profile  = profileRepository.findById(id);
+		if (null != profile){
+			profile.setTitle(skillDTO.getTitle());
+			profile.setDiploma(skillDTO.getDiploma());
+			profile.setDiplomaDate(skillDTO.getDiplomaDate());
+			profile.setIdDriveDoc(skillDTO.getIdDriveDoc());
+			profile.setSkills(skillDTO.getSkills());
+			profile.setProfileLanguages(skillDTO.getProfileLanguages());
+			
+			profileRepository.saveAndFlush(profile);
+		}
+		return null;
 	}
 	
 	

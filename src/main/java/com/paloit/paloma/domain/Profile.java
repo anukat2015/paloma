@@ -22,6 +22,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.paloit.paloma.utils.enums.StaffingStatus;
+import com.paloit.paloma.utils.enums.StatusContact;
 import com.paloit.paloma.utils.enums.StatusRecruitment;
 import com.paloit.paloma.utils.enums.TypeSourcing;
 
@@ -68,6 +69,13 @@ public class Profile {
     @Enumerated(EnumType.STRING)
     @Column(name="STATUS_RECRUITMENT")
     private StatusRecruitment statusRecruitment;
+    
+    /**
+     * To contact or not anymore.
+     */
+    @Enumerated(EnumType.STRING)
+    @Column(name="STATUS_CONTACT")
+    private StatusContact statusContact;
     
     /**
      * Number of experiences.
@@ -165,7 +173,7 @@ public class Profile {
     /**
      * List of interview.
      */
-    @OneToMany(fetch=FetchType.LAZY, mappedBy = "profile")
+    @OneToMany(fetch=FetchType.LAZY, mappedBy = "profile",cascade=CascadeType.ALL)
     private List<Interview> interviews;
     
     /**
@@ -190,7 +198,7 @@ public class Profile {
     /**
      * CAREER Historical.
      */
-    @OneToMany(fetch=FetchType.LAZY, mappedBy = "profile")
+    @OneToMany(fetch=FetchType.LAZY, mappedBy = "profile" ,cascade=CascadeType.ALL)
     private List<Staffing> staffings;
 
     /**
