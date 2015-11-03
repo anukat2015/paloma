@@ -3,10 +3,9 @@ package com.paloit.paloma.rest;
 import com.paloit.paloma.dto.ContactDTO;
 import com.paloit.paloma.dto.RecruitmentDTO;
 import com.paloit.paloma.dto.SkillDTO;
+import com.paloit.paloma.domain.Skill;
 import com.paloit.paloma.dto.CareerDTO;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,18 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
  * REST controller for managing Profile.
  */
 @RestController
-@RequestMapping("/app")
+@RequestMapping("/profile")
 public class ProfileResource {
-
-	/**
-	 * Log.
-	 */
-	private static final Logger logger = LogManager.getLogger(ProfileResource.class);
 	
 	/**
      *  method to create a profile.
      */
-    @RequestMapping(value = "/profile/createProfile",
+    @RequestMapping(value = "/createProfile",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public void createProfile(@RequestBody ContactDTO contact){
@@ -39,27 +33,28 @@ public class ProfileResource {
     /**
      *  method to save screen contact identified by id.
      */
-    @RequestMapping(value = "/profile/saveContact/{id}",
+    @RequestMapping(value = "/saveContact/{id}",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void saveContact(@PathVariable Long id, @RequestBody ContactDTO contact){
+    public void saveContact(@PathVariable Long id, @RequestBody ContactDTO contactDTO){
         
     }
 
     /**
      *  method to save screen skill of a profile identified by id.
      */
-    @RequestMapping(value = "/profile/saveSkill/{id}",
+    @RequestMapping(value = "/saveSkill/{id}",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void saveSkill(@PathVariable Long id, @RequestBody SkillDTO skill){
+    public void saveSkill(@PathVariable Long id, @RequestBody SkillDTO skillDTO){
+        
         
     }
 
     /**
      *  method to save screen career of a profile identified by id
      */
-    @RequestMapping(value = "/profile/saveCareer/{id}",
+    @RequestMapping(value = "/saveCareer/{id}",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public void saveCareer(@PathVariable Long id, @RequestBody CareerDTO staff){
@@ -69,7 +64,7 @@ public class ProfileResource {
     /**
      *  method to save screen recruitment of a profile identified by id
      */
-    @RequestMapping(value = "/rest/profile/saveRecruitment/{id}",
+    @RequestMapping(value = "/saveRecruitment/{id}",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public void saveRecruitment(@PathVariable Long id, @RequestBody RecruitmentDTO recruitment){

@@ -1,6 +1,8 @@
 package com.paloit.paloma.service.user;
 
+import com.paloit.paloma.domain.User;
 import com.paloit.paloma.domain.UserStatus;
+import com.paloit.paloma.dto.UserDTO;
 
 public interface UserService {
 	
@@ -13,4 +15,6 @@ public interface UserService {
 	 */
 	public void create(String email, String firstname, String lastname, String password, UserStatus userStatus);
 
+	
+	public User findByEmailAndPassword(UserDTO userDTO);
 }

@@ -2,12 +2,11 @@ package com.paloit.paloma.service.user.impl;
 
 import java.util.Calendar;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.paloit.paloma.domain.User;
 import com.paloit.paloma.domain.UserStatus;
+import com.paloit.paloma.dto.UserDTO;
 import com.paloit.paloma.repository.UserRepository;
 import com.paloit.paloma.service.source.impl.SourceServiceImpl;
 import com.paloit.paloma.service.user.UserService;
@@ -20,10 +19,6 @@ import com.paloit.paloma.utils.CustomStringUtils;
  */
 public class UserServiceImpl implements UserService{
 
-	/**
-	 * Log.
-	 */
-	private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 	
 	/**
 	 * User repository.
@@ -43,6 +38,11 @@ public class UserServiceImpl implements UserService{
 			user.setUserStatus(userStatus);
 			userRepository.saveAndFlush(user);
 		}
+	}
+
+	public User findByEmailAndPassword(UserDTO userDTO) {	
+		User user = userRepository.findByEmailAndPassword(userDTO.getEmail(), userDTO.getPassword());
+		return user;
 	}
 	
 	

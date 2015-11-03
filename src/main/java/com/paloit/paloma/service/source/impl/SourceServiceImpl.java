@@ -2,8 +2,6 @@ package com.paloit.paloma.service.source.impl;
 
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,10 +20,6 @@ import com.paloit.paloma.service.source.SourceService;
 @Transactional
 public class SourceServiceImpl implements SourceService{
 
-	/**
-	 * Log.
-	 */
-	private static final Logger logger = LogManager.getLogger(SourceServiceImpl.class);
 	
 	/**
 	 * Source repository.
