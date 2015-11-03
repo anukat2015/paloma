@@ -23,4 +23,7 @@ public interface ProfileRepository  extends JpaRepository<Profile, Long>,JpaSpec
 	 */
 	@Query("SELECT p FROM Profile p JOIN FETCH p.contact WHERE p.id=:id")
 	Profile findById(@Param("id")Long id);
+	
+	
+	Profile findByFirstNameAndLastName(String firstName,String lastName);
 }

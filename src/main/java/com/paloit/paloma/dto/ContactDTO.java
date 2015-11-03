@@ -13,7 +13,7 @@ public class ContactDTO {
     private String zip;
     private String proEmail;
     private String city;
-    private Country country;
+    private String country;
     private Date birthDate;
 
     public ContactDTO() {
@@ -89,15 +89,21 @@ public class ContactDTO {
         this.city = city;
     }
 
-    public Country getCountry() {
-        return country;
-    }
+    /**
+	 * @return the country
+	 */
+	public String getCountry() {
+		return country;
+	}
 
-    public void setCountry(Country country) {
-        this.country = country;
-    }
+	/**
+	 * @param country the country to set
+	 */
+	public void setCountry(String country) {
+		this.country = country;
+	}
 
-    public Date getBirthDate() {
+	public Date getBirthDate() {
         return birthDate;
     }
 

@@ -14,7 +14,7 @@ import javax.persistence.Table;
  * Created by Yu on 27/10/2015.
  */
 @Entity
-@Table(name="Contact")
+@Table(name="CONTACT")
 public class Contact {
 
 	/**
