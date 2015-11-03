@@ -111,6 +111,38 @@ public class ProfileServiceImpl implements ProfileService{
 		}
 		return null;
 	}
+	
+	
+	public String updateContact(ContactDTO contactDTO) {
+		
+		if (!StringUtils.isEmpty(contactDTO.getFirstName()) && !StringUtils.isEmpty(contactDTO.getLastName())){
+		    Profile profile = findByFirstNameAndLastName(contactDTO.getFirstName(),contactDTO.getLastName());
+			if (null != profile){
+			    Contact contact = new Contact();
+				contact.setAddress(contactDTO.getAddress());
+				contact.setCity(contactDTO.getCity());
+				contact.setEmail(contactDTO.getEmail());
+				contact.setPhoneNumber(contactDTO.getPhoneNumber());
+				contact.setZip(contactDTO.getZip());
+				Country country = countryRepository.findByTitle(contactDTO.getCountry());
+				if (country != null){
+					contact.setCountry(country);
+				}
+				List<Contact> contacts = new ArrayList<Contact>();
+				contacts.add(contact);
+				profile.setContact(contacts);
+				profile.setFirstName(contactDTO.getFirstName());
+				profile.setLastName(contactDTO.getLastName());
+				profile.setBirthDate(contactDTO.getBirthDate());
+				
+				profile = profileRepository.saveAndFlush(profile);
+				
+				return Long.toString(profile.getId());
+			}
+			
+		}
+		return null;
+	}
 
 	public Profile findByFirstNameAndLastName(String firstName, String lastName) {
 		

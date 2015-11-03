@@ -15,11 +15,18 @@ import com.paloit.paloma.dto.ContactDTO;
 public interface ProfileService {
 	
 	/**
-	 * Create a profil in a contact.
+	 * Create a profilein a contact.
 	 * @param id
 	 * @return
 	 */
 	String createContact(ContactDTO contactDTO);
+	
+	/**
+	 * Update a profile in a contact.
+	 * @param id
+	 * @return
+	 */
+	String updateContact(ContactDTO contactDTO);
 	
 	/**
 	 * Find a profile with the same name and lastname.
