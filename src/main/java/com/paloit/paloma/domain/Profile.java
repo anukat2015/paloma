@@ -165,10 +165,11 @@ public class Profile {
     private Date birthDate;
     
     /**
-     * List of contact.
+     * contact.
      */
-    @OneToMany(fetch=FetchType.LAZY, mappedBy = "profile")
-    private List<Contact> contact;
+    @OneToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name = "ID_CONTACT")
+    private Contact contact;
 
     /**
      * List of interview.
@@ -478,21 +479,7 @@ public class Profile {
 	public void setBirthDate(Date birthDate) {
 		this.birthDate = birthDate;
 	}
-
-	/**
-	 * @return the contact
-	 */
-	public List<Contact> getContact() {
-		return contact;
-	}
-
-	/**
-	 * @param contact the contact to set
-	 */
-	public void setContact(List<Contact> contact) {
-		this.contact = contact;
-	}
-
+	
 	/**
 	 * @return the interviews
 	 */
@@ -634,5 +621,34 @@ public class Profile {
 		this.user = user;
 	}
 
+	/**
+	 * @return the statusContact
+	 */
+	public StatusContact getStatusContact() {
+		return statusContact;
+	}
+
+	/**
+	 * @param statusContact the statusContact to set
+	 */
+	public void setStatusContact(StatusContact statusContact) {
+		this.statusContact = statusContact;
+	}
+
+	/**
+	 * @param contact the contact to set
+	 */
+	public void setContact(Contact contact) {
+		this.contact = contact;
+	}
+
+	/**
+	 * @return the contact
+	 */
+	public Contact getContact() {
+		return contact;
+	}
+
+	
 	
 }

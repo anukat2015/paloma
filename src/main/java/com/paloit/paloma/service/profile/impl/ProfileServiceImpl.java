@@ -52,12 +52,12 @@ public class ProfileServiceImpl implements ProfileService{
 	@Autowired
 	CountryRepository countryRepository;
 	
-	public List<Contact> findContactsByProfileId(Long id){
+	public Contact findContactsByProfileId(Long id){
 		
 		Profile profile = profileRepository.findById(id);
-		List<Contact> contacts = profile.getContact();
+		Contact contact = profile.getContact();
 		
-		return contacts;
+		return contact;
 	}
 /*
 	public List<Profile> search(final String keys, final String contractType, final String zip, final String expYear, final Date availability,
@@ -97,10 +97,8 @@ public class ProfileServiceImpl implements ProfileService{
 				if (country != null){
 					contact.setCountry(country);
 				}
-				List<Contact> contacts = new ArrayList<Contact>();
-				contacts.add(contact);
 				Profile profile = new Profile();
-				profile.setContact(contacts);
+				profile.setContact(contact);
 				profile.setFirstName(contactDTO.getFirstName());
 				profile.setLastName(contactDTO.getLastName());
 				profile.setBirthDate(contactDTO.getBirthDate());
@@ -128,10 +126,8 @@ public class ProfileServiceImpl implements ProfileService{
 				Country country = countryRepository.findByTitle(contactDTO.getCountry());
 				if (country != null){
 					contact.setCountry(country);
-				}
-				List<Contact> contacts = new ArrayList<Contact>();
-				contacts.add(contact);
-				profile.setContact(contacts);
+				}				
+				profile.setContact(contact);
 				profile.setFirstName(contactDTO.getFirstName());
 				profile.setLastName(contactDTO.getLastName());
 				profile.setBirthDate(contactDTO.getBirthDate());

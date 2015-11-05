@@ -50,7 +50,7 @@ public interface ProfileService {
 	 * @param id
 	 * @return
 	 */
-	List<Contact> findContactsByProfileId(Long id);
+	Contact findContactsByProfileId(Long id);
 	
 	/**
 	 * 
