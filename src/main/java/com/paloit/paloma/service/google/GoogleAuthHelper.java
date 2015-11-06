@@ -11,10 +11,14 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson.JacksonFactory;
+import com.paloit.paloma.dto.UserGoogleDTO;
+
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.List;
+
+import org.codehaus.jackson.map.ObjectMapper;
 
 /**
  * A helper class for Google's OAuth2 authentication API.
@@ -100,7 +104,12 @@ public final class GoogleAuthHelper {
 		final HttpRequest request = requestFactory.buildGetRequest(url);
 		request.getHeaders().setContentType("application/json");
 		final String jsonIdentity = request.execute().parseAsString();
-
+		
+		UserGoogleDTO googleUser = new ObjectMapper()
+				.readValue(jsonIdentity, UserGoogleDTO.class);
+		
+		System.out.println(googleUser);
+		
 		return jsonIdentity;
 
 	}

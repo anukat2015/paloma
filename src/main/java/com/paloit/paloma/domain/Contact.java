@@ -15,64 +15,64 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="CONTACT")
-public class Contact {
+public class Contact extends BusinessEntity<Long> {
 
 	/**
-     * Sequence name.
-     */
-    private static final String SEQUENCENAME = "SEQUENCE_CONTACT";
-  
+	 * Sequence name.
+	 */
+	private static final String SEQUENCENAME = "SEQUENCE_CONTACT";
+
 	/**
 	 * Contact id.
 	 */
-    @Id
-    @SequenceGenerator(name = SEQUENCENAME, sequenceName = SEQUENCENAME, initialValue = 1, allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQUENCENAME)
-    @Column(name = "ID_CONTACT", length = 10)
+	@Id
+	@SequenceGenerator(name = SEQUENCENAME, sequenceName = SEQUENCENAME, initialValue = 1, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQUENCENAME)
+	@Column(name = "ID_CONTACT", length = 10)
 	private Long id;
-    
-    /**
-     * Phone number.
-     */
-    @Column(name = "PHONE_NUMBER", length = 20)
-    private String phoneNumber;
-    
-    /**
-     * Email
-     */
-    @Column(name = "EMAIL", length = 100)
-    private String email;
-    
-    /**
-     * Professional email.
-     */
-    @Column(name = "PRO_EMAIL", length = 100)
-    private String proEmail;
-    
-    /**
-     * Country.
-     */
-    @ManyToOne
-    @JoinColumn(name = "ID_COUNTRY")
-    private Country country;
-    
-    /**
-     * City.
-     */
-    @Column(name = "CITY", length = 50)
-    private String city;
-    
-    /**
-     * Address.
-     */
-    @Column(name = "ADDRESS", length = 100)
-    private String address;
-    
-    /**
-     * Zip.
-     */
-    @Column(name = "ZIP", length = 20)
-    private String zip;
+
+	/**
+	 * Phone number.
+	 */
+	@Column(name = "PHONE_NUMBER", length = 20)
+	private String phoneNumber;
+
+	/**
+	 * Email
+	 */
+	@Column(name = "EMAIL", length = 100)
+	private String email;
+
+	/**
+	 * Professional email.
+	 */
+	@Column(name = "PRO_EMAIL", length = 100)
+	private String proEmail;
+
+	/**
+	 * Country.
+	 */
+	@ManyToOne
+	@JoinColumn(name = "ID_COUNTRY")
+	private Country country;
+
+	/**
+	 * City.
+	 */
+	@Column(name = "CITY", length = 50)
+	private String city;
+
+	/**
+	 * Address.
+	 */
+	@Column(name = "ADDRESS", length = 100)
+	private String address;
+
+	/**
+	 * Zip.
+	 */
+	@Column(name = "ZIP", length = 20)
+	private String zip;
 
 	/**
 	 * @return the id
@@ -185,8 +185,26 @@ public class Contact {
 	public void setZip(String zip) {
 		this.zip = zip;
 	}
-    
-	
-    
-    
+
+	/**
+	 * @return The  textual representation of the instance
+	 */
+	@Override
+	public String toString(){
+		return super.toString() + " " + this.getEmail() 
+		+ " " +  this.toStringAddress();
+	}
+
+	/**
+	 * 
+	 * @return The textual representation of the address
+	 */
+	private String toStringAddress(){
+		return this.getCity() + " " + this.getZip() 
+		+ " " + this.getCity() + " " + this.getCountry();
+	}
+
+
+
+
 }

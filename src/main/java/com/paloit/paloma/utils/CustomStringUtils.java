@@ -4,6 +4,13 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.SecretKeySpec;
+
+import java.security.InvalidKeyException;
+import java.security.Key;
+
 /**
  * Static method using Strings.
  * @author DTRANG
@@ -12,35 +19,52 @@ import java.security.NoSuchAlgorithmException;
 public final class CustomStringUtils {
 
 	/**
-	 * MD5 type of encryption.
+	 * Key of encryption.
 	 */
-	private static final String ENCRYPTION_MD5 = "MD5";  
+	private static final String ENCRYPTION_KEY = "Bar12345Bar12345";
 	
 	/**
-	 * Encrypt the string in md5.
+	 * MD5 type of encryption.
+	 */
+	private static final String ENCRYPTION_AES = "AES";  
+		
+	/**
+	 * Encrypt the string in aes.
 	 * @param input
 	 * @return encrypted String
+	 * 
 	 */
-	public static String encryptMd5(String input){
+	public static byte[] encryptAes(String input) throws Exception{
 		
-		String md5 = null;
-  
-        if(null == input) {
-        	return null;         
-        }
-        try {   
-	        //Create MessageDigest object for MD5
-	        MessageDigest digest = MessageDigest.getInstance(ENCRYPTION_MD5);
-	         
-	        //Update input string in message digest
-	        digest.update(input.getBytes(), 0, input.length());
-	 
-	        //Converts message digest value in base 16 (hex) 
-	        md5 = new BigInteger(1, digest.digest()).toString(16);
-	        
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return md5;		
+		 // Create key and cipher 
+		Key aesKey = new SecretKeySpec(ENCRYPTION_KEY.getBytes(), ENCRYPTION_AES);
+		Cipher cipher = Cipher.getInstance(ENCRYPTION_AES);
+		
+		// encrypt the text
+		cipher.init(Cipher.ENCRYPT_MODE, aesKey);
+		byte[] encrypted = cipher.doFinal(input.getBytes());
+			
+		return encrypted;
+		
+	}
+	
+	/**
+	 * Decrypt the string in aes.
+	 * @param input
+	 * @return decrypted String
+	 * 
+	 */
+	public static String decryptAes(String input) throws Exception{
+		
+		 // Create key and cipher 
+		Key aesKey = new SecretKeySpec(ENCRYPTION_KEY.getBytes(), ENCRYPTION_AES);
+		Cipher cipher = Cipher.getInstance(ENCRYPTION_AES);
+		
+		// Decrypt the text
+		cipher.init(Cipher.DECRYPT_MODE, aesKey);
+		String decrypted = new String(cipher.doFinal(input.getBytes()));
+		
+		return decrypted;
+		
 	}
 }
