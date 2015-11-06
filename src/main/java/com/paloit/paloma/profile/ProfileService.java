@@ -1,4 +1,4 @@
-package com.paloit.paloma.service.profile;
+package com.paloit.paloma.profile;
 
 import java.sql.Date;
 import java.util.List;

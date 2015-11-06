@@ -1,10 +1,10 @@
-package com.paloit.paloma.controller;
+package com.paloit.paloma.profile;
 
+import com.paloit.paloma.domain.Skill;
+import com.paloit.paloma.dto.CareerDTO;
 import com.paloit.paloma.dto.ContactDTO;
 import com.paloit.paloma.dto.RecruitmentDTO;
 import com.paloit.paloma.dto.SkillDTO;
-import com.paloit.paloma.domain.Skill;
-import com.paloit.paloma.dto.CareerDTO;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;

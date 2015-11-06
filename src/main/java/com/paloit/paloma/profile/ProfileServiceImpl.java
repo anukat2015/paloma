@@ -1,4 +1,4 @@
-package com.paloit.paloma.service.profile.impl;
+package com.paloit.paloma.profile;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -20,10 +20,7 @@ import com.paloit.paloma.domain.Country;
 import com.paloit.paloma.domain.Profile;
 import com.paloit.paloma.dto.ContactDTO;
 import com.paloit.paloma.dto.SkillDTO;
-import com.paloit.paloma.repository.ContactRepository;
-import com.paloit.paloma.repository.CountryRepository;
-import com.paloit.paloma.repository.ProfileRepository;
-import com.paloit.paloma.service.profile.ProfileService;
+import com.paloit.paloma.profile.contact.ContactRepository;
 
 /**
  * Implemented profile service.

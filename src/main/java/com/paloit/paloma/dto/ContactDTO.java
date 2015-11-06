@@ -1,7 +1,5 @@
 package com.paloit.paloma.dto;
 
-import com.paloit.paloma.domain.Country;
-
 import java.util.Date;
 
 public class ContactDTO {

@@ -1,4 +1,4 @@
-package com.paloit.paloma.service.user;
+package com.paloit.paloma.user;
 
 import com.paloit.paloma.domain.User;
 import com.paloit.paloma.dto.UserDTO;

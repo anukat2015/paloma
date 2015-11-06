@@ -1,4 +1,4 @@
-package com.paloit.paloma.controller;
+package com.paloit.paloma.user;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;

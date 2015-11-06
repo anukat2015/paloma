@@ -1,4 +1,4 @@
-package com.paloit.paloma.repository;
+package com.paloit.paloma.profile;
 
 import java.util.List;
 

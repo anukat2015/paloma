@@ -1,4 +1,4 @@
-package com.paloit.paloma.service.user.impl;
+package com.paloit.paloma.user;
 
 import java.util.Calendar;
 
@@ -10,8 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.paloit.paloma.domain.User;
 import com.paloit.paloma.dto.UserDTO;
 import com.paloit.paloma.dto.UserGoogleDTO;
-import com.paloit.paloma.repository.UserRepository;
-import com.paloit.paloma.service.user.UserService;
 import com.paloit.paloma.utils.PalomaConstants;
 import com.paloit.paloma.utils.exception.PaloITDomainRestrictionException;
 import com.paloit.paloma.utils.exception.PalomaException;
