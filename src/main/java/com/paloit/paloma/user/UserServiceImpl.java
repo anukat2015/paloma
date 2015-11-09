@@ -2,8 +2,8 @@ package com.paloit.paloma.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.paloit.paloma.BusinessEntityServiceImpl;
 import com.paloit.paloma.domain.User;
@@ -18,7 +18,6 @@ import com.paloit.paloma.utils.exception.PalomaPersistenceContextException;
  *
  */
 @Service("UserService")
-@Transactional
 public class UserServiceImpl 
 extends BusinessEntityServiceImpl<User, Long> implements UserService{
 
@@ -74,8 +73,8 @@ extends BusinessEntityServiceImpl<User, Long> implements UserService{
 
 
 	@Override
-	protected String findAllQueryName() {
-		return User.QUERY_NAME_FIND_ALL;
+	public JpaRepository<User, Long> getRepository() {
+		return this.userRepository;
 	}
 
 

@@ -1,7 +1,7 @@
 package com.paloit.paloma.user;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.Repository;
 
 import com.paloit.paloma.domain.User;
 
@@ -10,7 +10,7 @@ import com.paloit.paloma.domain.User;
  * @author DTRANG
  *
  */
-public interface UserRepository extends Repository<User, Long>{
+public interface UserRepository extends JpaRepository<User, Long>{
 
 	/**
 	 * Find the user matching the email given in parameter

@@ -9,8 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -23,9 +21,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="USER")
-@NamedQueries({
-	@NamedQuery(name=User.QUERY_NAME_FIND_ALL, query="SELECT u FROM User u")
-})
 public class User extends BusinessEntity<Long> {
 
 	/**
@@ -36,8 +31,6 @@ public class User extends BusinessEntity<Long> {
      * Sequence name.
      */
     private static final String SEQUENCENAME = "SEQUENCE_USER";
-    
-    public static final String QUERY_NAME_FIND_ALL = "findAllUsers";
 	/**
 	 * The id.
 	 */
@@ -198,14 +191,6 @@ public class User extends BusinessEntity<Long> {
 	 */
 	public void setGoogleId(String googleId) {
 		this.googleId = googleId;
-	}
-
-	/**
-	 * Return the find all query name
-	 * @return The find all query name
-	 */
-	public static String findAllQueryName(){
-		return User.QUERY_NAME_FIND_ALL;
 	}
    
 }

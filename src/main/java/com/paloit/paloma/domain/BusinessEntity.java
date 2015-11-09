@@ -22,11 +22,6 @@ public abstract class BusinessEntity<V> implements Serializable {
 	private static final long serialVersionUID = -8588173670017548991L;
 	
 	/**
-	 * The find all query name
-	 */
-	public static final String QUERY_NAME_FIND_ALL = "";
-	
-	/**
 	 * The version used to manage concurrent
 	 * access of the instance in persistence
 	 * context
@@ -84,14 +79,6 @@ public abstract class BusinessEntity<V> implements Serializable {
 			}
 		}
 		return equals;
-	}
-	
-	/**
-	 * Return the find all query name
-	 * @return The find all query name
-	 */
-	public static String findAllQueryName(){
-		return "";
 	}
 
 }

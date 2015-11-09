@@ -3,11 +3,13 @@
  */
 package com.paloit.paloma;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.paloit.paloma.domain.BusinessEntity;
 import com.paloit.paloma.utils.exception.PalomaPersistenceContextException;
@@ -16,33 +18,20 @@ import com.paloit.paloma.utils.exception.PalomaPersistenceContextException;
  * @author SLOPESNEVES
  *
  */
-public abstract class BusinessEntityServiceImpl<V extends BusinessEntity<W>, W> 
+public abstract class BusinessEntityServiceImpl<V extends BusinessEntity<W>, 
+ W extends Serializable> 
 implements BusinessEntityService<V, W> {
 	/**
 	 * The entity manager
 	 */
 	@PersistenceContext
 	private EntityManager em;
-	
-	private TypedQuery<V> QUERY_FIND_ALL;
-	
-	public BusinessEntityServiceImpl() {
-		try{
-			this.QUERY_FIND_ALL = 
-					this.em.createNamedQuery(
-							this.findAllQueryName(), 
-							this.getEntityClass());
-			//TODO Add info logger
-		}catch(Exception e){
-			//TODO Add error logger
-		}
-	}
 
 	@Override
 	public V create() throws PalomaPersistenceContextException {
 		try{
 			V entity = this.getEntityClass().newInstance();
-			this.em.persist(entity);
+			entity = this.getRepository().save(entity);
 			return entity;
 		}catch(Exception e){
 			String message = this + " fail to create a "
@@ -57,19 +46,13 @@ implements BusinessEntityService<V, W> {
 	@Override
 	public List<V> findAll() throws PalomaPersistenceContextException {
 		try{
-			return this.QUERY_FIND_ALL.getResultList();
+			return this.getRepository().findAll();
 		}catch(Exception e){
 			String message = this + " fail to find all " + this.getEntityClass();
 			//TODO Add error logger
 			throw new PalomaPersistenceContextException(message);
 		}
 	}
-	
-	/**
-	 * Return the find all query to use
-	 * @return
-	 */
-	protected abstract String findAllQueryName();
 
 	@Override
 	public V find(W id) throws PalomaPersistenceContextException {
@@ -109,4 +92,6 @@ implements BusinessEntityService<V, W> {
 		}
 		
 	}
+	
+	public abstract JpaRepository<V, W> getRepository();
 }
