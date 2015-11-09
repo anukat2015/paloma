@@ -1,90 +1,81 @@
 package com.paloit.paloma.user;
 
-import java.util.Calendar;
-
-import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.paloit.paloma.BusinessEntityServiceImpl;
 import com.paloit.paloma.domain.User;
+import com.paloit.paloma.dto.GoogleUserDTO;
 import com.paloit.paloma.dto.UserDTO;
-import com.paloit.paloma.dto.UserGoogleDTO;
-import com.paloit.paloma.utils.PalomaConstants;
-import com.paloit.paloma.utils.exception.PaloITDomainRestrictionException;
-import com.paloit.paloma.utils.exception.PalomaException;
 import com.paloit.paloma.utils.exception.PalomaPersistenceContextException;
 
 /**
  * Implemented user service.
  * @author DTRANG
+ * @version 0.0.1
  *
  */
 @Service("UserService")
 @Transactional
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl 
+extends BusinessEntityServiceImpl<User, Long> implements UserService{
 
 
 	/**
 	 * User repository.
 	 */
 	@Autowired
-	private UserRepository userRepository;
+	private UserRepository userRepository;	
+
 
 	/**
-	 * The current user
+	 * Find the user matching the user DTO
+	 * email and password given in parameter
+	 * @param userDTO The user DTO
+	 * @return The user
 	 */
-	private User currentUser;
-
-	public User authentication(UserGoogleDTO googleUser) 
-			throws PalomaException {
-
-		this.checkPaloITDomain(googleUser);
-
-		User user = userRepository.findByEmail(googleUser.getEmail());
-
-		if(user == null){
-			this.create(googleUser);
-		}
-
-		return user;
-	}
-
-	private void checkPaloITDomain(UserGoogleDTO googleUser)
-			throws PaloITDomainRestrictionException {
+	public User findByEmailAndPassword(UserDTO userDTO) 
+			throws PalomaPersistenceContextException  {
 		try{
-			if(!PalomaConstants.PALO_IT_DOMAIN.equals(googleUser.getDomain())){
-				throw new PaloITDomainRestrictionException("The user " + googleUser + " is not allowed to log in this application");
-			}
-		}catch(PaloITDomainRestrictionException e){
-			//TODO Add log
-			throw e;
+			return this.userRepository
+					.findByEmailAndPassword(userDTO.getEmail(), 
+							userDTO.getPassword());
+		}catch(DataAccessException e){
+			String message = this + " failed to find user by email and password "
+					+ "from " + userDTO;
+			//TODO Add logger error
+			throw new PalomaPersistenceContextException(message);
+
 		}
+
 	}
 
 
-
-	public User create(UserGoogleDTO googleUser) throws PalomaPersistenceContextException {
-		User user = new User();
-		user.setEmail(googleUser.getEmail());
-		user.setFirstName(googleUser.getFirstName());
-		user.setLastName(googleUser.getFamilyName());
-		user.setIsBanned(false);
-		user.setCreatedDate(Calendar.getInstance().getTime());
+	@Override
+	public User find(GoogleUserDTO googleUser) 
+			throws PalomaPersistenceContextException {
 		try{
-			user = userRepository.saveAndFlush(user);
-		}catch(HibernateException e){
-			//TODO Add logger
-			throw new PalomaPersistenceContextException(e);
+			return this.userRepository.findByGoogleId(googleUser.getId());
+		}catch(DataAccessException e){
+			String message = this + " failed to find user matching " +
+					"the Google ID : " + googleUser;
+			//TODO Add logger error
+			throw new PalomaPersistenceContextException(message);
 		}
-		return user;
+
+	}
+
+	@Override
+	public Class<User> getEntityClass() {
+		return User.class;
 	}
 
 
-
-	public User findByEmailAndPassword(UserDTO userDTO) {
-		// TODO Auto-generated method stub
-		return null;
+	@Override
+	protected String findAllQueryName() {
+		return User.QUERY_NAME_FIND_ALL;
 	}
 
 

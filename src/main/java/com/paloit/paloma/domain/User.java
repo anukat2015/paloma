@@ -1,6 +1,6 @@
 package com.paloit.paloma.domain;
 
-import java.util.Date;
+import java.util.Calendar;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,21 +9,35 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * Connection account of the app and marketing account.
- * Created by Yu on 27/10/2015.
+ * @author Yu
+ * @since 10/27/2015
  */
 @Entity
 @Table(name="USER")
-public class User {
+@NamedQueries({
+	@NamedQuery(name=User.QUERY_NAME_FIND_ALL, query="SELECT u FROM User u")
+})
+public class User extends BusinessEntity<Long> {
 
+	/**
+	 * The generated serial UID
+	 */
+	private static final long serialVersionUID = 3521699924725634358L;
 	/**
      * Sequence name.
      */
     private static final String SEQUENCENAME = "SEQUENCE_USER";
+    
+    public static final String QUERY_NAME_FIND_ALL = "findAllUsers";
 	/**
 	 * The id.
 	 */
@@ -56,7 +70,8 @@ public class User {
      * Date of creation.
      */
 	@Column(name = "CREATION_DATE")
-    private Date createdDate;
+	@Temporal(TemporalType.TIMESTAMP)
+    private Calendar createdDate;
     /**
      * Active / desactivate.
      */
@@ -70,6 +85,10 @@ public class User {
 	@JoinColumn(name = "ID_USER_STATUS")
 	private UserStatus userStatus;
 	
+	/**
+	 * The id provided by Google SSO WS
+	 */
+	private String googleId;
 	
 	/**
 	 * @return the id
@@ -134,13 +153,13 @@ public class User {
 	/**
 	 * @return the createdDate
 	 */
-	public Date getCreatedDate() {
+	public Calendar getCreatedDate() {
 		return createdDate;
 	}
 	/**
 	 * @param createdDate the createdDate to set
 	 */
-	public void setCreatedDate(Date createdDate) {
+	public void setCreatedDate(Calendar createdDate) {
 		this.createdDate = createdDate;
 	}
 	/**
@@ -167,7 +186,26 @@ public class User {
 	public void setUserStatus(UserStatus userStatus) {
 		this.userStatus = userStatus;
 	}
-
 	
+	/**
+	 * @return the googleId
+	 */
+	public String getGoogleId() {
+		return googleId;
+	}
+	/**
+	 * @param googleId the googleId to set
+	 */
+	public void setGoogleId(String googleId) {
+		this.googleId = googleId;
+	}
+
+	/**
+	 * Return the find all query name
+	 * @return The find all query name
+	 */
+	public static String findAllQueryName(){
+		return User.QUERY_NAME_FIND_ALL;
+	}
    
 }

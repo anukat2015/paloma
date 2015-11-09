@@ -13,7 +13,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
  *
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class UserGoogleDTO {
+public class GoogleUserDTO {
 	/**
 	 * The id
 	 */

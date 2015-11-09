@@ -1,4 +1,4 @@
-<%@page import="com.paloit.paloma.service.google.GoogleAuthHelper"%>
+<%@page import="com.paloit.paloma.google.GoogleAuthHelper"%>
 <html>
 <body>
 <%
