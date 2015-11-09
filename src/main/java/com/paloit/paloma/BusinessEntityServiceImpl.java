@@ -57,7 +57,7 @@ implements BusinessEntityService<V, W> {
 	@Override
 	public V find(W id) throws PalomaPersistenceContextException {
 		try{
-			return this.em.find(this.getEntityClass(), id);
+			return this.getRepository().findOne(id);
 		}catch(Exception e){
 			String message = this + " fail to find "
 					+ this.getEntityClass() + " id " + id;
@@ -70,7 +70,7 @@ implements BusinessEntityService<V, W> {
 	@Override
 	public V update(V entity) throws PalomaPersistenceContextException {
 		try{
-			entity = this.em.merge(entity);
+			entity = this.getRepository().save(entity);
 			//TODO Add debug logger
 			return entity;
 		}catch(Exception e){
@@ -83,7 +83,7 @@ implements BusinessEntityService<V, W> {
 	@Override
 	public void delete(V entity) throws PalomaPersistenceContextException {
 		try{
-			this.em.remove(entity);
+			this.getRepository().delete(entity);
 			//TODO Add  info logger
 		}catch(Exception e){
 			String message = this + " fail to update " + entity;
