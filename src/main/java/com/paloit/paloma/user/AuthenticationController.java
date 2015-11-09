@@ -3,11 +3,14 @@
  */
 package com.paloit.paloma.user;
 
+import java.util.Calendar;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.paloit.paloma.domain.User;
@@ -46,6 +49,7 @@ public class AuthenticationController {
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	@Transactional
+	@ResponseBody
 	public User authentication(@RequestParam String code) 
 			throws PalomaException{
 		GoogleUserDTO googleUser = null;
@@ -60,8 +64,15 @@ public class AuthenticationController {
 				user = this.userService.find(googleUser);
 				if(user == null){
 					user = this.userService.create();
+					user.setFirstName(googleUser.getFirstName());
+					user.setLastName(googleUser.getFamilyName());
+					user.setGoogleId(googleUser.getId());
+					user.setEmail(googleUser.getEmail());
+					user.setCreatedDate(Calendar.getInstance());
+					user = this.userService.update(user);
 				}
 			}
+			
 			return user;
 		} catch (PalomaException e) {
 			String message = this + " fail the authentication from the code : "
