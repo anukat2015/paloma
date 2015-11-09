@@ -49,8 +49,7 @@ public class AuthenticationController {
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	@Transactional
-	@ResponseBody
-	public User authentication(@RequestParam String code) 
+	public @ResponseBody User authentication(@RequestParam String code) 
 			throws PalomaException{
 		GoogleUserDTO googleUser = null;
 		User user = null;
