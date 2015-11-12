@@ -1,5 +1,12 @@
 package com.paloit.paloma.google;
 
+import java.io.IOException;
+import java.security.SecureRandom;
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.stereotype.Controller;
+
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeRequestUrl;
@@ -11,15 +18,6 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson.JacksonFactory;
-import com.paloit.paloma.dto.GoogleUserDTO;
-
-import java.io.IOException;
-import java.security.SecureRandom;
-import java.util.Arrays;
-import java.util.List;
-
-import org.codehaus.jackson.map.ObjectMapper;
-import org.springframework.stereotype.Controller;
 
 /**
  * A helper class for Google's OAuth2 authentication API.
@@ -31,16 +29,16 @@ public class GoogleAuthHelper {
 	/**
 	 * Please provide a value for the CLIENT_ID constant before proceeding, set this up at https://code.google.com/apis/console/
 	 */
-	private static final String CLIENT_ID = "570941281473-hdps2bbo97ctpmletnnlogsic2ifn558.apps.googleusercontent.com";
+	private static final String CLIENT_ID = "852815160721-odq9kl622hj1pkpa0acrbd2rsii9c59m.apps.googleusercontent.com";
 	/**
 	 * Please provide a value for the CLIENT_SECRET constant before proceeding, set this up at https://code.google.com/apis/console/
 	 */
-	private static final String CLIENT_SECRET = "qisVmW8A8k47zJMhzkVTp29r";
+	private static final String CLIENT_SECRET = "O8YMPabINTEuPlQ39nbEB580";
 
 	/**
 	 * Callback URI that google will redirect to after successful authentication
 	 */
-	private static final String CALLBACK_URI = "http://localhost:8080/paloma/authentication";
+	private static final String CALLBACK_URI = "http://localhost:8080/paloma";
 	
 	// start google authentication constants
 	private static final List<String> SCOPE = Arrays.asList("https://www.googleapis.com/auth/userinfo.profile;https://www.googleapis.com/auth/userinfo.email".split(";"));

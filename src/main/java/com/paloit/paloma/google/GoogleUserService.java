@@ -69,6 +69,7 @@ public class GoogleUserService {
 			String message = this + " failed to getting user info " +
 					"from the code " + code;
 			//TODO Add error logger
+			e.printStackTrace();
 			throw new PalomaGoogleAuthenticationException(message);
 		}
 	}
@@ -129,5 +130,14 @@ public class GoogleUserService {
 			throw new PalomaPersistenceContextException(e);
 		}
 		return user;
+	}
+	
+	/**
+	 * Provide the authentication URL to
+	 * Google SSO
+	 * @return The authentication URL
+	 */
+	public String buildAuthenticationUrl(){
+		return this.googleAuthHelper.buildLoginUrl();
 	}
 }

@@ -71,7 +71,6 @@ public class AuthenticationController {
 					user = this.userService.update(user);
 				}
 			}
-			
 			return user;
 		} catch (PalomaException e) {
 			String message = this + " fail the authentication from the code : "
@@ -79,6 +78,15 @@ public class AuthenticationController {
 			//TODO Add error logger
 			throw new PalomaException(message);
 		}
+	}
+	
+	/**
+	 * Provide the authentication URL from Google SSO
+	 * @return The authentication URL
+	 */
+	@RequestMapping(value="/url", method=RequestMethod.GET)
+	public @ResponseBody String getAuthenticationUrl(){
+		return this.googleUserService.buildAuthenticationUrl();
 	}
 	
 	
