@@ -1,20 +1,48 @@
-var AuthenticationButton = React.createClass ({
+var LogInPanel = React.createClass ({
+	getInitialState : function () {
+		return {
+			authenticationUrl : ""
+		};
+	},
+	componentDidMount : function () {
+		var component = this;
+		$.get("/paloma/authentication/url", function (data) {
+			component.setState({
+				authenticationUrl: data
+			});
+		});
+	},
 	render : function () {
 		return (
-				<a href={'https://accounts.google.com/o/oauth2/auth?client_id=852815160721-odq9kl622hj1pkpa0acrbd2rsii9c59m.apps.googleusercontent.com&redirect_uri=http://localhost:8080/paloma&response_type=code&scope=https://www.googleapis.com/auth/userinfo.profile%20https://www.googleapis.com/auth/userinfo.email&state=google;2025860991'}>
-					<img 
-					src={'http://www.registryvalet.com/graphics/icon_sm_google_plus.png'}/>
-				</a>
+				<ul className="nav navbar-nav navbar-right">
+					<li>
+						<a className="navbar-brand" href={this.state.authenticationUrl}>
+							<img 
+							src={'http://www.registryvalet.com/graphics/icon_sm_google_plus.png'}/>
+						</a>
+					</li>
+				</ul>
 		);
 	}
 });
 
+var LogOutPanel = React.createClass ({
+    render : function () {
+    	return (
+    		<ul className="nav navbar-nav navbar-right">
+	    		<li>
+	    			<p className="navbar-text">Hello {this.props.user.firstName}</p>
+	    		</li>
+	    		<li>
+	    			<a href="#">Log out</a>
+	    		</li>
+    		</ul>
+	        
+	    )
+    }
+});
+
 var NavBar = React.createClass ({
-	getInitialState : function(){
-		return {
-			welcomeMessage : "Welcome on Paloma"
-		};
-	},
 	render : function () {
 		return(
 			<nav className="navbar navbar-default">
@@ -31,11 +59,7 @@ var NavBar = React.createClass ({
 								<a href="#">Search</a>
 							</li>
 						</ul>
-						<ul className="nav navbar-nav navbar-right">
-							<li>
-								<a href="#">Hello {this.props.username}</a>
-							</li>
-						</ul>
+						{this.props.authenticationPanel}
 					</div>
 				</div>
 			</nav>
@@ -47,7 +71,7 @@ var MainPanel = React.createClass ({
 	 * Function used to find parameter from
 	 * get request
 	 */
-	getUrlParam : function(param) {
+	getUrlParam : function (param) {
 		var vars = {};
 		window.location.href.replace( 
 			/[?&]+([^=&]+)=?([^&]*)?/gi,
@@ -62,28 +86,26 @@ var MainPanel = React.createClass ({
 	},
 	getInitialState : function(){
 		return {
-			username : ""
+            authenticationPanel: <LogInPanel />
 		};
 	},
-	componentDidMount: function(){
+	componentDidMount: function (){
 		var component = this;
 		var authenticationCode = this.getUrlParam('code');
 		if(authenticationCode != undefined){
-			console.log("We have authentication code")
 			$.get("/paloma/authentication?code=" + authenticationCode,
 			function(data){
-				console.log("Data is " + data);
 				component.setState({
 					user : data,
-					username : data.firstName
+                    authenticationPanel : <LogOutPanel user={data}/>
 				});
 			});
 		}
 	},
-	render: function() {
+	render: function () {
 		return (
 		<div className="container-fluid">
-			<NavBar username={this.state.username} />
+			<NavBar authenticationPanel={this.state.authenticationPanel} />
 		
 			<div>
 				<div className="row">
@@ -93,7 +115,6 @@ var MainPanel = React.createClass ({
 			</div>
 			<div className="row">
 				<div className="col-md-offset-4 col-md-4">
-					<AuthenticationButton />
 				</div>
 			</div>
 		</div>
