@@ -1,21 +1,53 @@
+
+/**
+* Notification panel
+* @props alertType The type of alert (success, info, warning or danger)
+*/
+var NotificationPanel = React.createClass ({
+	render: function () {
+		return (
+			<div className={'alert alert-' + this.props.alertType + ' alert-dismissible'} role="alert">
+			  <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			  {this.props.message}
+			</div>
+		);
+	}
+})
 /**
 * The log in panel
 */
 var LogInPanel = React.createClass ({
 	getInitialState : function () {
 		return {
-			authenticationUrl : ""
+			authenticationUrl : "",
 		};
 	},
 	componentDidMount : function () {
 		var component = this;
+
+		var handleError = function () {
+				component.props.buildNotificationPanel("danger", "Authentication from \
+				Google is unavailable. Please try later or contact the administrator");
+		}
 		/**
 		* Loading the user from Paloma WS
 		*/
-		$.get("/paloma/authentication/url", function (data) {
-			component.setState({
-				authenticationUrl: data
-			});
+		$.ajax({
+			url : "/paloma/authentication/url",
+			type : 'GET',
+			dataType : 'text',
+			statusCode : {
+				500 : handleError
+			},
+			success : function (data) {
+				component.setState({
+					authenticationUrl: data
+				});
+
+			},
+			error : handleError
 		});
 	},
 	render : function () {
@@ -123,10 +155,19 @@ var MainPanel = React.createClass ({
 			loggedUserNavItems: ""
 		});
 	},
+
+	buildNotificationPanel : function (alertTypeParam, messageParam) {
+		var component = this;
+		component.setState({
+			notificationPanel : <NotificationPanel alertType={alertTypeParam} message={messageParam} />
+		})
+	},
 	getInitialState : function(){
+		var component = this;
 		return {
-            authenticationPanel: <LogInPanel />,
-            loggedUserNavItems: ""
+          authenticationPanel: <LogInPanel buildNotificationPanel={component.buildNotificationPanel}/>,
+					loggedUserNavItems: "",
+					notificationPanel : ""
 		};
 	},
 	componentDidMount: function (){
@@ -136,14 +177,26 @@ var MainPanel = React.createClass ({
 			/**
 			* Loading the user from Paloma WS
 			*/
-			$.get("/paloma/authentication?code=" + authenticationCode,
-			function(data){
-				component.setState({
-					user : data,
-					loggedUserNavItems : <LoggedUserNavItems/>,
-                    authenticationPanel : <LogOutPanel user={data} logOut={component.logOut}/>
-				});
-			});
+			$.ajax({
+				url : "/paloma/authentication?code=" + authenticationCode,
+				dataType : "json",
+				success : function(data){
+					component.setState({
+						user : data,
+						loggedUserNavItems : <LoggedUserNavItems/>,
+	          authenticationPanel : <LogOutPanel user={data} logOut={component.logOut}/>
+					});
+				}
+			,
+				error : function () {
+					component.setState({
+						notificationPanel : <NotificationPanel alertType="danger"
+						message="Oops. We are unable to get your Google profile. Are
+						you a Palo-IT member ? If you are,	please contact the administrator" />
+					})
+				}
+
+			})
 		}
 	},
 	render: function () {
@@ -160,6 +213,7 @@ var MainPanel = React.createClass ({
 			</div>
 			<div className="row">
 				<div className="col-md-offset-4 col-md-4">
+					{this.state.notificationPanel}
 				</div>
 			</div>
 		</div>
