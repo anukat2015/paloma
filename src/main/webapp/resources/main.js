@@ -1,3 +1,6 @@
+/**
+* The log in panel
+*/
 var LogInPanel = React.createClass ({
 	getInitialState : function () {
 		return {
@@ -6,6 +9,9 @@ var LogInPanel = React.createClass ({
 	},
 	componentDidMount : function () {
 		var component = this;
+		/**
+		* Loading the user from Paloma WS
+		*/
 		$.get("/paloma/authentication/url", function (data) {
 			component.setState({
 				authenticationUrl: data
@@ -16,8 +22,11 @@ var LogInPanel = React.createClass ({
 		return (
 				<ul className="nav navbar-nav navbar-right">
 					<li>
+						/**
+						*Loading the URL to used Google OAuth
+						*/
 						<a className="navbar-brand" href={this.state.authenticationUrl}>
-							<img 
+							<img
 							src={'http://www.registryvalet.com/graphics/icon_sm_google_plus.png'}/>
 						</a>
 					</li>
@@ -26,6 +35,9 @@ var LogInPanel = React.createClass ({
 	}
 });
 
+/**
+* The log out panel
+*/
 var LogOutPanel = React.createClass ({
 	render : function () {
     	return (
@@ -37,11 +49,14 @@ var LogOutPanel = React.createClass ({
 	    			<p id="logOut" className="navbar-text" onClick={this.props.logOut}>Log out</p>
 	    		</li>
     		</ul>
-	        
+
 	    )
     }
 });
 
+/**
+* The nav bar part available for logged users
+*/
 var LoggedUserNavItems = React.createClass ({
 	render : function () {
 		return (
@@ -57,6 +72,9 @@ var LoggedUserNavItems = React.createClass ({
 	}
 })
 
+/**
+* The nav bar
+*/
 var NavBar = React.createClass ({
 	render : function () {
 		return(
@@ -76,6 +94,9 @@ var NavBar = React.createClass ({
 	)}
 });
 
+/**
+* The root panel
+*/
 var MainPanel = React.createClass ({
 	/**
 	 * Function used to find parameter from
@@ -83,22 +104,26 @@ var MainPanel = React.createClass ({
 	 */
 	getUrlParam : function (param) {
 		var vars = {};
-		window.location.href.replace( 
+		window.location.href.replace(
 			/[?&]+([^=&]+)=?([^&]*)?/gi,
 			function( m, key, value ) {
 				vars[key] = value !== undefined ? value : '';
 			}
 		);
 		if ( param ) {
-			return vars[param] ? vars[param] : null;	
+			return vars[param] ? vars[param] : null;
 		}
 		return vars;
 	},
+	/**
+	* Remove the user of the current session
+	* of the application
+	*/
 	logOut: function(event){
 		this.setState({
 			user : undefined,
 			authenticationPanel: <LogInPanel />,
-			loggedUserNavItems: ""		
+			loggedUserNavItems: ""
 		});
 	},
 	getInitialState : function(){
@@ -111,6 +136,9 @@ var MainPanel = React.createClass ({
 		var component = this;
 		var authenticationCode = this.getUrlParam('code');
 		if(authenticationCode != undefined && this.user == undefined){
+			/**
+			* Loading the user from Paloma WS
+			*/
 			$.get("/paloma/authentication?code=" + authenticationCode,
 			function(data){
 				component.setState({
@@ -126,7 +154,7 @@ var MainPanel = React.createClass ({
 		<div className="container-fluid">
 			<NavBar authenticationPanel={this.state.authenticationPanel}
 			loggedUserNavItems={this.state.loggedUserNavItems}/>
-			
+
 			<div>
 				<div className="row">
 				<div className="col-md-offset-1 col-md-10">
@@ -140,7 +168,7 @@ var MainPanel = React.createClass ({
 		</div>
 		);
 	}
-	
+
 });
 
 ReactDOM.render(<MainPanel />, document.getElementById('main'));
