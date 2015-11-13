@@ -22,9 +22,6 @@ var LogInPanel = React.createClass ({
 		return (
 				<ul className="nav navbar-nav navbar-right">
 					<li>
-						/**
-						*Loading the URL to used Google OAuth
-						*/
 						<a className="navbar-brand" href={this.state.authenticationUrl}>
 							<img
 							src={'http://www.registryvalet.com/graphics/icon_sm_google_plus.png'}/>
