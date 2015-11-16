@@ -1,5 +1,6 @@
 package com.paloit.paloma.domain;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +21,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.paloit.paloma.utils.enums.StaffingStatus;
 import com.paloit.paloma.utils.enums.StatusContact;
@@ -28,7 +31,12 @@ import com.paloit.paloma.utils.enums.TypeSourcing;
 
 @Entity
 @Table(name="PROFILE")
-public class Profile {
+public class Profile extends BusinessEntity<Long> {
+	/**
+	 * The generated serial UID
+	 */
+	private static final long serialVersionUID = -5391998537911235000L;
+
 	/**
      * Sequence name.
      */
@@ -162,12 +170,13 @@ public class Profile {
      * Birth date of the profile.
      */
     @Column(name="DATE_BIRTH")
-    private Date birthDate;
+    @Temporal(TemporalType.DATE)
+    private Calendar birthDate;
     
     /**
      * contact.
      */
-    @OneToOne(fetch=FetchType.EAGER)
+    @OneToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
     @JoinColumn(name = "ID_CONTACT")
     private Contact contact;
 
@@ -219,7 +228,7 @@ public class Profile {
      * Modified date.
      */
     @Column(name = "DATE_MODIFIED")
-    private Date modifiedDate;
+    private Calendar modifiedDate;
     
     /**
      * Last user who has edited the profile.
@@ -469,14 +478,14 @@ public class Profile {
 	/**
 	 * @return the birthDate
 	 */
-	public Date getBirthDate() {
+	public Calendar getBirthDate() {
 		return birthDate;
 	}
 
 	/**
 	 * @param birthDate the birthDate to set
 	 */
-	public void setBirthDate(Date birthDate) {
+	public void setBirthDate(Calendar birthDate) {
 		this.birthDate = birthDate;
 	}
 	
@@ -596,14 +605,14 @@ public class Profile {
 	/**
 	 * @return the modifiedDate
 	 */
-	public Date getModifiedDate() {
+	public Calendar getModifiedDate() {
 		return modifiedDate;
 	}
 
 	/**
 	 * @param modifiedDate the modifiedDate to set
 	 */
-	public void setModifiedDate(Date modifiedDate) {
+	public void setModifiedDate(Calendar modifiedDate) {
 		this.modifiedDate = modifiedDate;
 	}
 

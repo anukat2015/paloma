@@ -1,8 +1,6 @@
 package com.paloit.paloma.profile;
 
-import java.sql.Date;
-import java.util.List;
-
+import com.paloit.paloma.BusinessEntityService;
 import com.paloit.paloma.domain.Contact;
 import com.paloit.paloma.domain.Profile;
 import com.paloit.paloma.dto.ContactDTO;
@@ -13,7 +11,7 @@ import com.paloit.paloma.dto.SkillDTO;
  * @author DTRANG
  *
  */
-public interface ProfileService {
+public interface ProfileService extends BusinessEntityService<Profile, Long> {
 	
 	/**
 	 * Create a profile in a contact.

@@ -76,7 +76,7 @@ var LogOutPanel = React.createClass ({
 	    			<p className="navbar-text">Hello {this.props.user.firstName}</p>
 	    		</li>
 	    		<li>
-	    			<p id="logOut" className="navbar-text" onClick={this.props.logOut}>Log out</p>
+	    			<p id="logOut" className="navbar-text clickable" onClick={this.props.logOut}>Log out</p>
 	    		</li>
     		</ul>
 
@@ -132,12 +132,12 @@ var ProfilePanel = React.createClass ({
 		return (
 			<div className="row">
 				<div className="col-md-4 col-md-offset-2 text-center">
-					<img className="img-rounded" alt="Create profile"
+					<img className="img-rounded clickable" alt="Create profile"
 					src='/paloma/resources/icon/user-add.png'/>
 					<p>Create new profile</p>
 				</div>
 				<div className="col-md-4 col-md-offset-2">
-					<img className="img-rounded" alt="Search profile"
+					<img className="img-rounded clickable" alt="Search profile"
 					src='/paloma/resources/icon/user-search.png'/>
 					<p>Search profile</p>
 					</div>

@@ -18,6 +18,11 @@ import javax.persistence.Table;
 public class Contact extends BusinessEntity<Long> {
 
 	/**
+	 * The generated serial UID
+	 */
+	private static final long serialVersionUID = 7405698407789121813L;
+
+	/**
 	 * Sequence name.
 	 */
 	private static final String SEQUENCENAME = "SEQUENCE_CONTACT";

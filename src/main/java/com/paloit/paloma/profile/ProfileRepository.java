@@ -1,13 +1,10 @@
 package com.paloit.paloma.profile;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.paloit.paloma.domain.Contact;
 import com.paloit.paloma.domain.Profile;
 
 /**

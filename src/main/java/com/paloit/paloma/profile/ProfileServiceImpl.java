@@ -11,10 +11,12 @@ import javax.persistence.criteria.Root;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import com.paloit.paloma.BusinessEntityServiceImpl;
 import com.paloit.paloma.domain.Contact;
 import com.paloit.paloma.domain.Country;
 import com.paloit.paloma.domain.Profile;
@@ -29,7 +31,7 @@ import com.paloit.paloma.profile.contact.ContactRepository;
  */
 @Service("ProfileService")
 @Transactional
-public class ProfileServiceImpl implements ProfileService{
+public class ProfileServiceImpl extends BusinessEntityServiceImpl<Profile, Long> implements ProfileService{
 
 	/**
 	 * Profile repository.
@@ -156,6 +158,22 @@ public class ProfileServiceImpl implements ProfileService{
 			profileRepository.saveAndFlush(profile);
 		}
 		return null;
+	}
+	
+	/**
+	 * @return The Profile class
+	 */
+	@Override
+	public Class<Profile> getEntityClass() {
+		return Profile.class;
+	}
+	
+	/**
+	 * @return The profile repository
+	 */
+	@Override
+	public JpaRepository<Profile, Long> getRepository() {
+		return this.profileRepository;
 	}
 	
 	
