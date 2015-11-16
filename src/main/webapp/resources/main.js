@@ -2,6 +2,7 @@
 /**
 * Notification panel
 * @props alertType The type of alert (success, info, warning or danger)
+* @props message The message to render
 */
 var NotificationPanel = React.createClass ({
 	render: function () {
