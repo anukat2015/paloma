@@ -1,6 +1,6 @@
 package com.paloit.paloma.dto;
 
-import java.util.Date;
+import java.util.Calendar;
 
 public class ContactDTO {
     private String firstName;
@@ -12,7 +12,7 @@ public class ContactDTO {
     private String proEmail;
     private String city;
     private String country;
-    private Date birthDate;
+    private Calendar birthDate;
 
     public ContactDTO() {
     }
@@ -101,11 +101,11 @@ public class ContactDTO {
 		this.country = country;
 	}
 
-	public Date getBirthDate() {
+	public Calendar getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(Calendar birthDate) {
         this.birthDate = birthDate;
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.paloit.paloma.domain.Profile;
+import com.paloit.paloma.dto.ContactDTO;
 import com.paloit.paloma.profile.contact.ContactService;
 import com.paloit.paloma.utils.exception.PalomaException;
 import com.paloit.paloma.utils.exception.PalomaPersistenceContextException;
@@ -34,11 +35,13 @@ public class ProfileController {
 	 * @throws PalomaPersistenceContextException
 	 */
 	@RequestMapping(method=RequestMethod.POST)
-	public @ResponseBody Profile create() throws PalomaException{
+	public @ResponseBody Profile create(@RequestBody ContactDTO contact) throws PalomaException{
 		Profile profile = null;
 		try{
 			profile = this.profileService.create();
 			profile.setContact(this.contactService.create());
+			profile.setFirstName(contact.getFirstName());
+			profile.setLastName(contact.getLastName());
 			this.profileService.update(profile);
 			//TODO Add info log
 			return profile;

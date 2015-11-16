@@ -1,16 +1,6 @@
 package com.paloit.paloma.profile;
 
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +12,6 @@ import com.paloit.paloma.domain.Country;
 import com.paloit.paloma.domain.Profile;
 import com.paloit.paloma.dto.ContactDTO;
 import com.paloit.paloma.dto.SkillDTO;
-import com.paloit.paloma.profile.contact.ContactRepository;
 
 /**
  * Implemented profile service.
@@ -37,19 +26,13 @@ public class ProfileServiceImpl extends BusinessEntityServiceImpl<Profile, Long>
 	 * Profile repository.
 	 */
 	@Autowired
-	ProfileRepository profileRepository;
-	
-	/**
-	 * Contact repository.
-	 */
-	@Autowired
-	ContactRepository contactRepository;
+	private ProfileRepository profileRepository;
 	
 	/**
 	 * Country repository.
 	 */
 	@Autowired
-	CountryRepository countryRepository;
+	private CountryRepository countryRepository;
 	
 	public Contact findContactsByProfileId(Long id){
 		
