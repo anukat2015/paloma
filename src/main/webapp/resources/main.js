@@ -125,6 +125,29 @@ var NavBar = React.createClass ({
 });
 
 /**
+ * Panel used to manage profile
+ */
+var ProfilePanel = React.createClass ({
+	render : function () {
+		return (
+			<div className="row">
+				<div className="col-md-4 col-md-offset-2 text-center">
+					<img className="img-rounded" alt="Create profile"
+					src='/paloma/resources/icon/user-add.png'/>
+					<p>Create new profile</p>
+				</div>
+				<div className="col-md-4 col-md-offset-2">
+					<img className="img-rounded" alt="Search profile"
+					src='/paloma/resources/icon/user-search.png'/>
+					<p>Search profile</p>
+					</div>
+			</div>
+		);
+	}
+})
+
+
+/**
 * The root panel
 */
 var MainPanel = React.createClass ({
@@ -153,7 +176,8 @@ var MainPanel = React.createClass ({
 		this.setState({
 			user : undefined,
 			authenticationPanel: <LogInPanel />,
-			loggedUserNavItems: ""
+			loggedUserNavItems: "",
+			profilePanel: ""
 		});
 	},
 
@@ -168,7 +192,8 @@ var MainPanel = React.createClass ({
 		return {
           authenticationPanel: <LogInPanel buildNotificationPanel={component.buildNotificationPanel}/>,
 					loggedUserNavItems: "",
-					notificationPanel : ""
+					notificationPanel : "",
+					profilePanel: ""
 		};
 	},
 	componentDidMount: function (){
@@ -185,14 +210,15 @@ var MainPanel = React.createClass ({
 					component.setState({
 						user : data,
 						loggedUserNavItems : <LoggedUserNavItems/>,
-	          authenticationPanel : <LogOutPanel user={data} logOut={component.logOut}/>
+	          authenticationPanel : <LogOutPanel user={data} logOut={component.logOut}/>,
+						profilePanel : <ProfilePanel />
 					});
 				}
 			,
 				error : function () {
 					component.setState({
 						notificationPanel : <NotificationPanel alertType="danger"
-						message="Oops. We are unable to get your Google profile. Are
+						message="Oops. We are unable to get your Google profile. Are \
 						you a Palo-IT member ? If you are,	please contact the administrator" />
 					})
 				}
@@ -217,6 +243,7 @@ var MainPanel = React.createClass ({
 					{this.state.notificationPanel}
 				</div>
 			</div>
+			{ this.state.profilePanel }
 		</div>
 		);
 	}
