@@ -12,6 +12,6 @@ public interface CountryRepository extends JpaRepository<Country, Long>,JpaSpeci
 	 * @param title
 	 * @return
 	 */
-	Country findByTitle(String title);
+	Country findByTitleIgnoreCase(String title);
 
 }

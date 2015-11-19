@@ -4,14 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import com.paloit.paloma.BusinessEntityServiceImpl;
 import com.paloit.paloma.domain.Contact;
-import com.paloit.paloma.domain.Country;
 import com.paloit.paloma.domain.Profile;
 import com.paloit.paloma.dto.ContactDTO;
 import com.paloit.paloma.dto.SkillDTO;
+import com.paloit.paloma.profile.contact.ContactService;
+import com.paloit.paloma.utils.exception.PalomaException;
+import com.paloit.paloma.utils.exception.PalomaPersistenceContextException;
+import com.paloit.paloma.utils.exception.PalomaProfileAlreadyExistException;
 
 /**
  * Implemented profile service.
@@ -27,107 +29,79 @@ public class ProfileServiceImpl extends BusinessEntityServiceImpl<Profile, Long>
 	 */
 	@Autowired
 	private ProfileRepository profileRepository;
-	
+
 	/**
-	 * Country repository.
+	 * The contact service
 	 */
-	@Autowired
-	private CountryRepository countryRepository;
+	private ContactService contactService;
+
+	/**
+	 * Create a new profile from the contact given in parameter
+	 * @param contact The contact
+	 * @return The new profile
+	 * @throws PalomaException
+	 */
+	public Profile create(ContactDTO contact) throws PalomaException {
+		Profile profile = null;
+		try{
+			
+			if (this.profileAlreadyExists(contact)){
+				String message = this + " there is already a "
+						+ " profile matching " + contact;
+				//TODO Adding warn log
+				throw new PalomaProfileAlreadyExistException(message);
+				
+			}else {
+				profile = this.create();
+
+				profile.setFirstName(contact.getFirstName());
+				profile.setLastName(contact.getLastName());
+				profile.setBirthDate(contact.getBirthDate());
+				//Contact part
+				profile.setContact(this.contactService.create(contact));
+				profile = this.update(profile);
+				//TODO Add info logger
+				return profile;
+			}
+			
+		}catch(Exception e) {
+			String message = this + 
+					" failed to create the profile from " + contact;
+			//TODO Add error log
+			throw new PalomaException(message);
+		}
+
+	}
 	
+	private Boolean profileAlreadyExists(ContactDTO contact) 
+			throws PalomaPersistenceContextException {
+		Boolean alreadyExists = Boolean.FALSE;
+		try {
+			alreadyExists = this
+			.profileRepository
+			.findByFirstNameAndLastName(contact.getFirstName(), 
+					contact.getLastName()) == null;
+			return alreadyExists;
+		}catch(Exception e){
+			String message = this + " failed to check if " + contact
+					+ " already exists";
+			//TODO Add error log
+			throw new PalomaPersistenceContextException(message);
+		}
+	}
+	
+	
+
+	
+
 	public Contact findContactsByProfileId(Long id){
-		
+
 		Profile profile = profileRepository.findById(id);
 		Contact contact = profile.getContact();
-		
+
 		return contact;
 	}
-/*
-	public List<Profile> search(final String keys, final String contractType, final String zip, final String expYear, final Date availability,
-			final String office, final String mobility, final String status, final String recruitmentStatus, String order) {
-		
-		Specification<Profile> spec = new Specification<Profile>(){
-
-			public Predicate toPredicate(Root<Profile> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-				List<Predicate> predicateList = new ArrayList<Predicate>();
-				
-				if (!StringUtils.isEmpty(keys)){
-					String []words = keys.split(" ");
-					
-				}
-				if (!StringUtils.isEmpty(zip)){
-					predicateList.add(cb.and(cb.equal(root.get("zip"),zip)));
-				}
-				
-				return null;
-			}
-			
-		};
-		return null;
-	}
-*/
-	public String createContact(ContactDTO contactDTO) {
-		
-		if (!StringUtils.isEmpty(contactDTO.getFirstName()) && !StringUtils.isEmpty(contactDTO.getLastName())){
-			if (null != findByFirstNameAndLastName(contactDTO.getFirstName(),contactDTO.getLastName())){
-				Contact contact = new Contact();
-				contact.setAddress(contactDTO.getAddress());
-				contact.setCity(contactDTO.getCity());
-				contact.setEmail(contactDTO.getEmail());
-				contact.setPhoneNumber(contactDTO.getPhoneNumber());
-				contact.setZip(contactDTO.getZip());
-				Country country = countryRepository.findByTitle(contactDTO.getCountry());
-				if (country != null){
-					contact.setCountry(country);
-				}
-				Profile profile = new Profile();
-				profile.setContact(contact);
-				profile.setFirstName(contactDTO.getFirstName());
-				profile.setLastName(contactDTO.getLastName());
-				profile.setBirthDate(contactDTO.getBirthDate());
-				
-				profile = profileRepository.saveAndFlush(profile);
-				
-				return Long.toString(profile.getId());
-			}
-		}
-		return null;
-	}
 	
-	
-	public String updateContact(ContactDTO contactDTO) {
-		
-		if (!StringUtils.isEmpty(contactDTO.getFirstName()) && !StringUtils.isEmpty(contactDTO.getLastName())){
-		    Profile profile = findByFirstNameAndLastName(contactDTO.getFirstName(),contactDTO.getLastName());
-			if (null != profile){
-			    Contact contact = new Contact();
-				contact.setAddress(contactDTO.getAddress());
-				contact.setCity(contactDTO.getCity());
-				contact.setEmail(contactDTO.getEmail());
-				contact.setPhoneNumber(contactDTO.getPhoneNumber());
-				contact.setZip(contactDTO.getZip());
-				Country country = countryRepository.findByTitle(contactDTO.getCountry());
-				if (country != null){
-					contact.setCountry(country);
-				}				
-				profile.setContact(contact);
-				profile.setFirstName(contactDTO.getFirstName());
-				profile.setLastName(contactDTO.getLastName());
-				profile.setBirthDate(contactDTO.getBirthDate());
-				
-				profile = profileRepository.saveAndFlush(profile);
-				
-				return Long.toString(profile.getId());
-			}
-			
-		}
-		return null;
-	}
-
-	public Profile findByFirstNameAndLastName(String firstName, String lastName) {
-		
-		Profile profile = profileRepository.findByFirstNameAndLastName(firstName, lastName);
-		return profile;
-	}
 	public Profile updateSkill(Long id, SkillDTO skillDTO) {
 		Profile profile  = profileRepository.findById(id);
 		if (null != profile){
@@ -137,12 +111,12 @@ public class ProfileServiceImpl extends BusinessEntityServiceImpl<Profile, Long>
 			profile.setIdDriveDoc(skillDTO.getIdDriveDoc());
 			profile.setSkills(skillDTO.getSkills());
 			profile.setProfileLanguages(skillDTO.getProfileLanguages());
-			
+
 			profileRepository.saveAndFlush(profile);
 		}
 		return null;
 	}
-	
+
 	/**
 	 * @return The Profile class
 	 */
@@ -150,7 +124,7 @@ public class ProfileServiceImpl extends BusinessEntityServiceImpl<Profile, Long>
 	public Class<Profile> getEntityClass() {
 		return Profile.class;
 	}
-	
+
 	/**
 	 * @return The profile repository
 	 */
@@ -158,6 +132,6 @@ public class ProfileServiceImpl extends BusinessEntityServiceImpl<Profile, Long>
 	public JpaRepository<Profile, Long> getRepository() {
 		return this.profileRepository;
 	}
-	
-	
+
+
 }

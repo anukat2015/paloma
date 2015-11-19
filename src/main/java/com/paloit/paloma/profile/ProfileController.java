@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.paloit.paloma.domain.Profile;
 import com.paloit.paloma.dto.ContactDTO;
-import com.paloit.paloma.profile.contact.ContactService;
 import com.paloit.paloma.utils.exception.PalomaException;
 import com.paloit.paloma.utils.exception.PalomaPersistenceContextException;
 
@@ -17,17 +16,14 @@ import com.paloit.paloma.utils.exception.PalomaPersistenceContextException;
 @RequestMapping(value="/profile")
 public class ProfileController {
 	/**
+	 * The request mapping URL
+	 */
+	public static final String REQUEST_MAPPING_URL = "/profile";
+	/**
 	 * The profile service
 	 */
 	@Autowired
 	private ProfileService profileService;
-	
-	
-	/**
-	 * The contact service
-	 */
-	@Autowired
-	private ContactService contactService;
 	
 	/**
 	 * Create a new profile
@@ -38,11 +34,7 @@ public class ProfileController {
 	public @ResponseBody Profile create(@RequestBody ContactDTO contact) throws PalomaException{
 		Profile profile = null;
 		try{
-			profile = this.profileService.create();
-			profile.setContact(this.contactService.create());
-			profile.setFirstName(contact.getFirstName());
-			profile.setLastName(contact.getLastName());
-			this.profileService.update(profile);
+			profile = this.profileService.create(contact);
 			//TODO Add info log
 			return profile;
 		}catch(Exception e){

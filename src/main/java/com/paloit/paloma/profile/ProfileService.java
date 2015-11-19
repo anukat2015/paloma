@@ -5,6 +5,7 @@ import com.paloit.paloma.domain.Contact;
 import com.paloit.paloma.domain.Profile;
 import com.paloit.paloma.dto.ContactDTO;
 import com.paloit.paloma.dto.SkillDTO;
+import com.paloit.paloma.utils.exception.PalomaException;
 
 /**
  * Service profile.
@@ -14,18 +15,13 @@ import com.paloit.paloma.dto.SkillDTO;
 public interface ProfileService extends BusinessEntityService<Profile, Long> {
 	
 	/**
-	 * Create a profile in a contact.
-	 * @param id
-	 * @return
+	 * Create a new profile from the contact given in parameter
+	 * @param contact The contact
+	 * @return The new profile
+	 * @throws PalomaException
 	 */
-	String createContact(ContactDTO contactDTO);
+	public Profile create(ContactDTO contact) throws PalomaException;
 	
-	/**
-	 * Update a profile in a contact.
-	 * @param id
-	 * @return
-	 */
-	String updateContact(ContactDTO contactDTO);
 	
 	/**
 	 * Update the skills.
@@ -34,14 +30,6 @@ public interface ProfileService extends BusinessEntityService<Profile, Long> {
 	 * @return
 	 */
 	Profile updateSkill(Long id, SkillDTO skillDTO);
-	
-	/**
-	 * Find a profile with the same name and lastname.
-	 * @param firstName
-	 * @param lastName
-	 * @return
-	 */
-	Profile findByFirstNameAndLastName(String firstName, String lastName);
 
 	/**
 	 * Find contacts for one profile.

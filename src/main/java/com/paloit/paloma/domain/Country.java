@@ -14,8 +14,13 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="COUNTRY")
-public class Country {
+public class Country extends BusinessEntity<Long> {
 	
+	/**
+	 * The generated serial UID
+	 */
+	private static final long serialVersionUID = 1620335419367980737L;
+
 	/**
      * Sequence name.
      */
