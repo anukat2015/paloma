@@ -8,12 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.paloit.paloma.BusinessEntityServiceImpl;
 import com.paloit.paloma.domain.Contact;
 import com.paloit.paloma.domain.Profile;
-import com.paloit.paloma.dto.ContactDTO;
 import com.paloit.paloma.dto.SkillDTO;
-import com.paloit.paloma.profile.contact.ContactService;
-import com.paloit.paloma.utils.exception.PalomaException;
-import com.paloit.paloma.utils.exception.PalomaPersistenceContextException;
-import com.paloit.paloma.utils.exception.PalomaProfileAlreadyExistException;
 
 /**
  * Implemented profile service.
@@ -22,78 +17,15 @@ import com.paloit.paloma.utils.exception.PalomaProfileAlreadyExistException;
  */
 @Service("ProfileService")
 @Transactional
-public class ProfileServiceImpl extends BusinessEntityServiceImpl<Profile, Long> implements ProfileService{
+public class ProfileServiceImpl extends BusinessEntityServiceImpl<Profile, Long, ProfileRepository> implements ProfileService{
 
 	/**
 	 * Profile repository.
 	 */
 	@Autowired
 	private ProfileRepository profileRepository;
-
-	/**
-	 * The contact service
-	 */
-	private ContactService contactService;
-
-	/**
-	 * Create a new profile from the contact given in parameter
-	 * @param contact The contact
-	 * @return The new profile
-	 * @throws PalomaException
-	 */
-	public Profile create(ContactDTO contact) throws PalomaException {
-		Profile profile = null;
-		try{
-			
-			if (this.profileAlreadyExists(contact)){
-				String message = this + " there is already a "
-						+ " profile matching " + contact;
-				//TODO Adding warn log
-				throw new PalomaProfileAlreadyExistException(message);
-				
-			}else {
-				profile = this.create();
-
-				profile.setFirstName(contact.getFirstName());
-				profile.setLastName(contact.getLastName());
-				profile.setBirthDate(contact.getBirthDate());
-				//Contact part
-				profile.setContact(this.contactService.create(contact));
-				profile = this.update(profile);
-				//TODO Add info logger
-				return profile;
-			}
-			
-		}catch(Exception e) {
-			String message = this + 
-					" failed to create the profile from " + contact;
-			//TODO Add error log
-			throw new PalomaException(message);
-		}
-
-	}
-	
-	private Boolean profileAlreadyExists(ContactDTO contact) 
-			throws PalomaPersistenceContextException {
-		Boolean alreadyExists = Boolean.FALSE;
-		try {
-			alreadyExists = this
-			.profileRepository
-			.findByFirstNameAndLastName(contact.getFirstName(), 
-					contact.getLastName()) == null;
-			return alreadyExists;
-		}catch(Exception e){
-			String message = this + " failed to check if " + contact
-					+ " already exists";
-			//TODO Add error log
-			throw new PalomaPersistenceContextException(message);
-		}
-	}
 	
 	
-
-	
-
 	public Contact findContactsByProfileId(Long id){
 
 		Profile profile = profileRepository.findById(id);
@@ -129,7 +61,7 @@ public class ProfileServiceImpl extends BusinessEntityServiceImpl<Profile, Long>
 	 * @return The profile repository
 	 */
 	@Override
-	public JpaRepository<Profile, Long> getRepository() {
+	public ProfileRepository getRepository() {
 		return this.profileRepository;
 	}
 

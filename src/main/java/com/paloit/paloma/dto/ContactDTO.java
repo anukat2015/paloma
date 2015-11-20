@@ -2,7 +2,7 @@ package com.paloit.paloma.dto;
 
 import java.util.Calendar;
 
-public class ContactDTO {
+public class ContactDTO extends EntityDTO<Long> {
     private String firstName;
     private String lastName;
     private String phoneNumber;
@@ -107,5 +107,12 @@ public class ContactDTO {
 
     public void setBirthDate(Calendar birthDate) {
         this.birthDate = birthDate;
+    }
+    
+    /**
+     * @return Textual information of the instance
+     */
+    public String toString(){
+    	return super.toString() + " " + this.firstName + " " + this.lastName;
     }
 }

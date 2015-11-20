@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.paloit.paloma.domain.Contact;
 import com.paloit.paloma.domain.Profile;
 
 /**
@@ -23,4 +24,6 @@ public interface ProfileRepository  extends JpaRepository<Profile, Long>,JpaSpec
 	
 	
 	Profile findByFirstNameAndLastName(String firstName,String lastName);
+	
+	Profile findByContact(Contact contact);
 }

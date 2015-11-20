@@ -2,7 +2,6 @@ package com.paloit.paloma.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import com.paloit.paloma.BusinessEntityServiceImpl;
@@ -19,7 +18,7 @@ import com.paloit.paloma.utils.exception.PalomaPersistenceContextException;
  */
 @Service("UserService")
 public class UserServiceImpl 
-extends BusinessEntityServiceImpl<User, Long> implements UserService{
+extends BusinessEntityServiceImpl<User, Long, UserRepository> implements UserService{
 
 
 	/**
@@ -42,9 +41,9 @@ extends BusinessEntityServiceImpl<User, Long> implements UserService{
 					.findByEmailAndPassword(userDTO.getEmail(), 
 							userDTO.getPassword());
 		}catch(DataAccessException e){
-			String message = this + " failed to find user by email and password "
+			String message = "Failed to find user by email and password "
 					+ "from " + userDTO;
-			//TODO Add logger error
+			this.getLogger().error(message, e);
 			throw new PalomaPersistenceContextException(message);
 
 		}
@@ -58,9 +57,9 @@ extends BusinessEntityServiceImpl<User, Long> implements UserService{
 		try{
 			return this.userRepository.findByGoogleId(googleUser.getId());
 		}catch(DataAccessException e){
-			String message = this + " failed to find user matching " +
+			String message = "Failed to find user matching " +
 					"the Google ID : " + googleUser;
-			//TODO Add logger error
+			this.getLogger().error(message, e);
 			throw new PalomaPersistenceContextException(message);
 		}
 
@@ -73,7 +72,7 @@ extends BusinessEntityServiceImpl<User, Long> implements UserService{
 
 
 	@Override
-	public JpaRepository<User, Long> getRepository() {
+	public UserRepository getRepository() {
 		return this.userRepository;
 	}
 

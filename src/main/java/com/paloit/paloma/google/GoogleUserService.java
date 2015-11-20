@@ -6,11 +6,13 @@ package com.paloit.paloma.google;
 import java.io.IOException;
 import java.util.Calendar;
 
+import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.paloit.paloma.LogService;
 import com.paloit.paloma.domain.User;
 import com.paloit.paloma.dto.GoogleUserDTO;
 import com.paloit.paloma.user.UserService;
@@ -38,6 +40,12 @@ public class GoogleUserService {
 	 */
 	@Autowired
 	private UserService userService;
+	
+	/**
+	 * The log service
+	 */
+	@Autowired
+	private LogService logService;
 
 	/**
 	 * Create user DTO with the info provided 
@@ -63,13 +71,12 @@ public class GoogleUserService {
 		String jsonInfoFromGoogleSSO;
 		try {
 			jsonInfoFromGoogleSSO = this.googleAuthHelper.getUserInfoJson(code);
-			//TODO Add debug logger
+			this.getLogger().debug("Success to parse JSON Google user data");
 			return jsonInfoFromGoogleSSO;
 		} catch (IOException e) {
-			String message = this + " failed to getting user info " +
+			String message = "Failed to get user info " +
 					"from the code " + code;
-			//TODO Add error logger
-			e.printStackTrace();
+			this.getLogger().error(message, e);
 			throw new PalomaGoogleAuthenticationException(message);
 		}
 	}
@@ -87,13 +94,13 @@ public class GoogleUserService {
 		try {
 			googleUser = new ObjectMapper()
 					.readValue(userInfo, GoogleUserDTO.class);
-			//TODO Add debug logger
+			this.getLogger().debug("Success to generate " + googleUser);
 			return googleUser;
 		} catch (IOException e) {
-			String message = this + " failed to parse Google user infos " +
+			String message = "Failed to parse Google user infos " +
 					" from the following string :" + System.lineSeparator() 
 					+ userInfo;
-			//TODO Add error logger
+			this.getLogger().error(message, e);
 			throw new PalomaGoogleAuthenticationException(message);
 		}
 	}
@@ -124,9 +131,10 @@ public class GoogleUserService {
 		user.setCreatedDate(Calendar.getInstance());
 		try{
 			user = this.userService.update(user);
-			//TODO Add info logger
+			this.getLogger().info("Success to create " + user);
 		}catch(HibernateException e){
-			//TODO Add error logger
+			String message = "Failed to create " + User.class.getSimpleName() + " from " + googleUser;
+			this.getLogger().error(message, e);
 			throw new PalomaPersistenceContextException(e);
 		}
 		return user;
@@ -139,5 +147,9 @@ public class GoogleUserService {
 	 */
 	public String buildAuthenticationUrl(){
 		return this.googleAuthHelper.buildLoginUrl();
+	}
+	
+	private Logger getLogger(){
+		return this.logService.getLogger();
 	}
 }
