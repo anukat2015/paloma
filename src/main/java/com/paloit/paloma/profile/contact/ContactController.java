@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.paloit.paloma.LogService;
 import com.paloit.paloma.domain.Contact;
+import com.paloit.paloma.domain.Country;
 import com.paloit.paloma.domain.Profile;
 import com.paloit.paloma.dto.ContactDTO;
 import com.paloit.paloma.profile.ProfileService;
@@ -31,6 +32,7 @@ public class ContactController {
 	/**
 	 * The contact service
 	 */
+	@Autowired
 	private ContactService contactService;
 
 	/**
@@ -45,7 +47,7 @@ public class ContactController {
 	 * @throws PalomaPersistenceContextException
 	 */
 	@RequestMapping(method=RequestMethod.POST)
-	public @ResponseBody ContactDTO create(@RequestBody ContactDTO contactDTO) throws PalomaException{
+	@ResponseBody public ContactDTO create(@RequestBody ContactDTO contactDTO) throws PalomaException{
 		Profile profile = null;
 		try{
 
@@ -58,13 +60,16 @@ public class ContactController {
 			}else {
 				profile = this.profileService.create();
 				profile.setContact(this.contactService.create());
-				
+
 				profile = profileService.update(profile);
-				
+
 				contactDTO.setId(profile.getContact().getId());
 
-				
-				return this.update(contactDTO);
+				contactDTO = this.update(contactDTO);
+
+				this.getLogger().info("Success to create " + profile + " from " + contactDTO);;
+
+				return contactDTO;
 			}
 
 		}catch(Exception e) {
@@ -74,20 +79,20 @@ public class ContactController {
 		}
 
 	}
-	
+
 	private Boolean profileAlreadyExists(ContactDTO contact) 
 			throws PalomaPersistenceContextException {
 		Boolean alreadyExists = Boolean.FALSE;
 		try {
 			alreadyExists = this
-			.profileService.getRepository()
-			.findByFirstNameAndLastName(contact.getFirstName(), 
-					contact.getLastName()) == null;
+					.profileService.getRepository()
+					.findByFirstNameAndLastName(contact.getFirstName(), 
+							contact.getLastName()) == null;
 			return alreadyExists;
 		}catch(Exception e){
 			String message = "Failed to check if " + contact
 					+ " already exists";
-			this.getLogger().error(message);
+			this.getLogger().error(message, e);
 			throw new PalomaPersistenceContextException(message);
 		}
 	}
@@ -99,7 +104,7 @@ public class ContactController {
 	 * @throws PalomaException
 	 */
 	@RequestMapping(method=RequestMethod.PUT)
-	public @ResponseBody ContactDTO update(@RequestBody ContactDTO contactDTO) 
+	@ResponseBody public  ContactDTO update(@RequestBody ContactDTO contactDTO) 
 			throws PalomaException{
 		Profile profile = null;
 		Contact contact = null;
@@ -117,17 +122,19 @@ public class ContactController {
 			contact.setZip(contactDTO.getZip());
 			contact.setProEmail(contactDTO.getProEmail());
 			contact.setCity(contactDTO.getCity());
-			/* TODO Manage country
 			if(contactDTO.getCountry() != null 
 					&& !contactDTO.getCountry().isEmpty()) {
-				Country country = this.contactService.countryRepository.findByTitleIgnoreCase(contactDTO.getCountry());
+				Country country = this
+						.contactService
+						.findCountry(contactDTO.getCountry());
 				if(country == null){
-					country = new Country();
-					country.setTitle(contactDTO.getCountry());
-					country = this.countryRepository.save(country);
+					country = this
+							.contactService
+							.createCountry(contactDTO.getCountry());
 				}
-				contact.setCountry(country);
-			}*/
+				contact
+				.setCountry(country);
+			}
 			contact = this.contactService.update(contact);
 			this.getLogger().debug("Success to update " + contact);
 			profile.setContact(contact);
