@@ -26,6 +26,7 @@ public class ContactServiceImpl extends BusinessEntityServiceImpl<Contact, Long,
 	 * The repository used to manage 
 	 * contact in the persistence context
 	 */
+	@Autowired
 	private ContactRepository contactRepository;
 	
 	/**

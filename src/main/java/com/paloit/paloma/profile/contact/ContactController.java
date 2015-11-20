@@ -49,6 +49,7 @@ public class ContactController {
 	@RequestMapping(method=RequestMethod.POST)
 	@ResponseBody public ContactDTO create(@RequestBody ContactDTO contactDTO) throws PalomaException{
 		Profile profile = null;
+		Contact contact = null;
 		try{
 
 			if (this.profileAlreadyExists(contactDTO)){
@@ -59,7 +60,9 @@ public class ContactController {
 
 			}else {
 				profile = this.profileService.create();
-				profile.setContact(this.contactService.create());
+				contact = this.contactService.create();
+				
+				profile.setContact(contact);
 
 				profile = profileService.update(profile);
 
@@ -71,7 +74,6 @@ public class ContactController {
 
 				return contactDTO;
 			}
-
 		}catch(Exception e) {
 			String message = "Failed to create the profile from " + contactDTO;
 			this.getLogger().error(message, e);
@@ -87,7 +89,7 @@ public class ContactController {
 			alreadyExists = this
 					.profileService.getRepository()
 					.findByFirstNameAndLastName(contact.getFirstName(), 
-							contact.getLastName()) == null;
+							contact.getLastName()) != null;
 			return alreadyExists;
 		}catch(Exception e){
 			String message = "Failed to check if " + contact
@@ -98,9 +100,9 @@ public class ContactController {
 	}
 
 	/**
-	 * 
-	 * @param profile
-	 * @return
+	 * Update the data matching the contact DTO given in parameter
+	 * @param The contact DTO
+	 * @return The contact DTO
 	 * @throws PalomaException
 	 */
 	@RequestMapping(method=RequestMethod.PUT)
@@ -115,7 +117,6 @@ public class ContactController {
 			profile.setLastName(contactDTO.getLastName());
 			profile.setBirthDate(contactDTO.getBirthDate());
 			//Contact part
-			contact = this.contactService.create();
 			contact.setPhoneNumber(contactDTO.getPhoneNumber());
 			contact.setAddress(contactDTO.getAddress());
 			contact.setEmail(contactDTO.getEmail());

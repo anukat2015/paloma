@@ -32,7 +32,6 @@ implements BusinessEntityService<V, W, X> {
 	public V create() throws PalomaPersistenceContextException {
 		try{
 			V entity = this.getEntityClass().newInstance();
-			entity = this.getRepository().save(entity);
 			this.getLogger().info("Success save " + entity + " in the persistence context");
 			return entity;
 		}catch(Exception e){
