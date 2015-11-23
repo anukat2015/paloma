@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -75,51 +76,7 @@ public class ContactController {
 		}
 
 	}
-
-	@RequestMapping(method=RequestMethod.GET)
-	@ResponseBody public List<ContactDTO> findAll() 
-			throws PalomaException {
-		List<ContactDTO> contactsDTO = null;
-		List<Profile> profiles = null;
-		try {
-			profiles = this.profileService.findAll();
-			contactsDTO = new LinkedList<>();
-			for(Profile profile : profiles) {
-				if(profile.getContact() == null) {
-					this.getLogger().warn(profile + 
-							" was persisted without " 
-							+ Contact.class.getSimpleName());
-					profile.setContact(this.contactService.create());
-					profile = this.profileService.update(profile);
-				}
-				ContactDTO contactDTO = new ContactDTO();
-
-				contactDTO.setFirstName(profile.getFirstName());
-				contactDTO.setLastName(profile.getLastName());
-
-				Contact contact = profile.getContact();
-				contactDTO.setId(contact.getId());
-				contactDTO.setAddress(contact.getAddress());
-				contactDTO.setCity(contact.getCity());
-				if(contact.getCountry() != null) {
-					contactDTO.setCountry(contact.getCountry().getTitle());
-				}
-				contactDTO.setZip(contact.getZip());
-				contactDTO.setPhoneNumber(contact.getPhoneNumber());
-				contactDTO.setEmail(contact.getEmail());
-				contactDTO.setProEmail(contact.getProEmail());
-				contactsDTO.add(contactDTO);
-			}
-
-			return contactsDTO;
-		}catch(Exception e) {
-			String message = "Failed to find all " 
-					+ ContactDTO.class.getSimpleName();
-			this.getLogger().error(message, e);
-			throw new PalomaException(message);
-		}
-	}
-
+	
 	private Boolean profileAlreadyExists(ContactDTO contact) 
 			throws PalomaPersistenceContextException {
 		Boolean alreadyExists = Boolean.FALSE;
@@ -134,6 +91,50 @@ public class ContactController {
 					+ " already exists";
 			this.getLogger().error(message, e);
 			throw new PalomaPersistenceContextException(message);
+		}
+	}
+
+	@RequestMapping(method=RequestMethod.GET)
+	@ResponseBody public List<ContactDTO> findAll() 
+			throws PalomaException {
+		List<ContactDTO> contactsDTO = null;
+		List<Profile> profiles = null;
+		try {
+			profiles = this.profileService.findAll();
+			contactsDTO = new LinkedList<>();
+			
+			for(Profile profile : profiles) {
+				ContactDTO contactDTO = this.mapToDTO(profile);
+				contactsDTO.add(contactDTO);
+			}
+
+			return contactsDTO;
+		}catch(Exception e) {
+			String message = "Failed to find all " 
+					+ ContactDTO.class.getSimpleName();
+			this.getLogger().error(message, e);
+			throw new PalomaException(message);
+		}
+	}
+	
+	@RequestMapping(value="/{id}", method=RequestMethod.GET)
+	@ResponseBody public ContactDTO find(@PathVariable Long id) 
+			throws PalomaException{
+		Profile profile = null;
+		Contact contact = null;
+		ContactDTO contactDTO = null;
+		try{
+			contact = this.contactService.find(id);
+			profile = this.profileService.getRepository().findByContact(contact);
+			
+			contactDTO = this.mapToDTO(profile);
+			
+			return contactDTO;
+		}catch(Exception e){
+			String message = "Failed to load " + Profile.class.getSimpleName() 
+					+ " id " + id;
+			this.getLogger().error(message, e);
+			throw new PalomaException(message);
 		}
 	}
 
@@ -226,6 +227,43 @@ public class ContactController {
 			String message = "Failed to map profile from" + contactDTO;
 			this.getLogger().error(message, e);
 			throw new PalomaException(message);
+		}
+	}
+	
+	private ContactDTO mapToDTO(Profile profile) throws PalomaException {
+		ContactDTO contactDTO = null;
+		try {
+			if(profile.getContact() == null) {
+				this.getLogger().warn(profile + 
+						" was persisted without " 
+						+ Contact.class.getSimpleName());
+				profile.setContact(this.contactService.create());
+				profile = this.profileService.update(profile);
+			}
+			contactDTO = new ContactDTO();
+
+			contactDTO.setFirstName(profile.getFirstName());
+			contactDTO.setLastName(profile.getLastName());
+
+			Contact contact = profile.getContact();
+			contactDTO.setId(contact.getId());
+			contactDTO.setAddress(contact.getAddress());
+			contactDTO.setCity(contact.getCity());
+			if(contact.getCountry() != null) {
+				contactDTO.setCountry(contact.getCountry().getTitle());
+			}
+			contactDTO.setZip(contact.getZip());
+			contactDTO.setPhoneNumber(contact.getPhoneNumber());
+			contactDTO.setEmail(contact.getEmail());
+			contactDTO.setProEmail(contact.getProEmail());
+			this.getLogger().debug("Success to map " + contactDTO + 
+					" from " + profile);
+			return contactDTO;
+		}catch (Exception e){
+			String message = "Failed to map a " + ContactDTO.class.getSimpleName() + 
+					" from " + profile;
+			this.getLogger().error(message, e);
+			throw new PalomaException(e);
 		}
 	}
 
