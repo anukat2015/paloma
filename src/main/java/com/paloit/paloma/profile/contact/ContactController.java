@@ -108,7 +108,7 @@ public class ContactController {
 				contactDTO.setPhoneNumber(contact.getPhoneNumber());
 				contactDTO.setEmail(contact.getEmail());
 				contactDTO.setProEmail(contact.getProEmail());
-
+				contactsDTO.add(contactDTO);
 			}
 
 			return contactsDTO;
