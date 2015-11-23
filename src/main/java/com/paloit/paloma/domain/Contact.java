@@ -55,7 +55,6 @@ public class Contact extends BusinessEntity<Long> {
 	 * Professional email.
 	 */
 	@Column(name = "PRO_EMAIL", length = 100)
-	@NotBlank
 	private String proEmail;
 
 	/**

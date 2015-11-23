@@ -1,5 +1,8 @@
 package com.paloit.paloma.profile.contact;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,9 +50,9 @@ public class ContactController {
 	 * @throws PalomaPersistenceContextException
 	 */
 	@RequestMapping(method=RequestMethod.POST)
-	@ResponseBody public ContactDTO create(@RequestBody ContactDTO contactDTO) throws PalomaException{
+	@ResponseBody public ContactDTO create(@RequestBody ContactDTO contactDTO) 
+			throws PalomaException{
 		Profile profile = null;
-		Contact contact = null;
 		try{
 
 			if (this.profileAlreadyExists(contactDTO)){
@@ -59,18 +62,9 @@ public class ContactController {
 				throw new PalomaProfileAlreadyExistException(message);
 
 			}else {
-				profile = this.profileService.create();
-				contact = this.contactService.create();
-				
-				profile.setContact(contact);
-
-				profile = profileService.update(profile);
-
-				contactDTO.setId(profile.getContact().getId());
-
-				contactDTO = this.update(contactDTO);
-
-				this.getLogger().info("Success to create " + profile + " from " + contactDTO);;
+				profile = this.mapFromDTO(contactDTO);
+				this.getLogger().info("Success to create " + profile 
+						+ " from " + contactDTO);;
 
 				return contactDTO;
 			}
@@ -80,6 +74,50 @@ public class ContactController {
 			throw new PalomaException(message);
 		}
 
+	}
+
+	@RequestMapping(method=RequestMethod.GET)
+	@ResponseBody public List<ContactDTO> findAll() 
+			throws PalomaException {
+		List<ContactDTO> contactsDTO = null;
+		List<Profile> profiles = null;
+		try {
+			profiles = this.profileService.findAll();
+			contactsDTO = new LinkedList<>();
+			for(Profile profile : profiles) {
+				if(profile.getContact() == null) {
+					this.getLogger().warn(profile + 
+							" was persisted without " 
+							+ Contact.class.getSimpleName());
+					profile.setContact(this.contactService.create());
+					profile = this.profileService.update(profile);
+				}
+				ContactDTO contactDTO = new ContactDTO();
+
+				contactDTO.setFirstName(profile.getFirstName());
+				contactDTO.setLastName(profile.getLastName());
+
+				Contact contact = profile.getContact();
+				contactDTO.setId(contact.getId());
+				contactDTO.setAddress(contact.getAddress());
+				contactDTO.setCity(contact.getCity());
+				if(contact.getCountry() != null) {
+					contactDTO.setCountry(contact.getCountry().getTitle());
+				}
+				contactDTO.setZip(contact.getZip());
+				contactDTO.setPhoneNumber(contact.getPhoneNumber());
+				contactDTO.setEmail(contact.getEmail());
+				contactDTO.setProEmail(contact.getProEmail());
+
+			}
+
+			return contactsDTO;
+		}catch(Exception e) {
+			String message = "Failed to find all " 
+					+ ContactDTO.class.getSimpleName();
+			this.getLogger().error(message, e);
+			throw new PalomaException(message);
+		}
 	}
 
 	private Boolean profileAlreadyExists(ContactDTO contact) 
@@ -109,38 +147,8 @@ public class ContactController {
 	@ResponseBody public  ContactDTO update(@RequestBody ContactDTO contactDTO) 
 			throws PalomaException{
 		Profile profile = null;
-		Contact contact = null;
 		try{
-			contact = this.contactService.find(contactDTO.getId());
-			profile = this.profileService.getRepository().findByContact(contact);
-			profile.setFirstName(contactDTO.getFirstName());
-			profile.setLastName(contactDTO.getLastName());
-			profile.setBirthDate(contactDTO.getBirthDate());
-			//Contact part
-			contact.setPhoneNumber(contactDTO.getPhoneNumber());
-			contact.setAddress(contactDTO.getAddress());
-			contact.setEmail(contactDTO.getEmail());
-			contact.setZip(contactDTO.getZip());
-			contact.setProEmail(contactDTO.getProEmail());
-			contact.setCity(contactDTO.getCity());
-			if(contactDTO.getCountry() != null 
-					&& !contactDTO.getCountry().isEmpty()) {
-				Country country = this
-						.contactService
-						.findCountry(contactDTO.getCountry());
-				if(country == null){
-					country = this
-							.contactService
-							.createCountry(contactDTO.getCountry());
-				}
-				contact
-				.setCountry(country);
-			}
-			contact = this.contactService.update(contact);
-			this.getLogger().debug("Success to update " + contact);
-			profile.setContact(contact);
-			profile = this.profileService.update(profile);
-			this.getLogger().info("Success to create " + profile);
+			profile = this.mapFromDTO(contactDTO);
 			this.getLogger().debug("Success to update " + profile);
 			return contactDTO;
 		}catch(Exception e){
@@ -165,6 +173,57 @@ public class ContactController {
 			this.getLogger().info("Success to set " + profile + " as deleted");
 		}catch(Exception e){
 			String message = "Failed to set " + profile + " as deleted";
+			this.getLogger().error(message, e);
+			throw new PalomaException(message);
+		}
+	}
+
+	private Profile mapFromDTO(ContactDTO contactDTO) 
+			throws PalomaException{
+		Profile profile = null;
+		Contact contact = null;
+		try{
+			if(contactDTO.getId() == null) {
+				profile = this.profileService.create();
+				profile.setContact(this.contactService.create());
+				contact = profile.getContact();
+			}else{
+				contact = this.contactService.find(contactDTO.getId());
+				profile = this.profileService.getRepository().findByContact(contact);
+			}
+
+			
+			profile.setFirstName(contactDTO.getFirstName());
+			profile.setLastName(contactDTO.getLastName());
+			profile.setBirthDate(contactDTO.getBirthDate());
+			//Contact part
+			contact.setPhoneNumber(contactDTO.getPhoneNumber());
+			contact.setAddress(contactDTO.getAddress());
+			contact.setEmail(contactDTO.getEmail());
+			contact.setZip(contactDTO.getZip());
+			contact.setProEmail(contactDTO.getProEmail());
+			contact.setCity(contactDTO.getCity());
+			if(contactDTO.getCountry() != null 
+					&& !contactDTO.getCountry().isEmpty()) {
+				Country country = this
+						.contactService
+						.findCountry(contactDTO.getCountry());
+				if(country == null){
+					country = this
+							.contactService
+							.createCountry(contactDTO.getCountry());
+				}
+				contact
+				.setCountry(country);
+			}
+			profile.setContact(contact);
+			profile = this.profileService.update(profile);
+			this.getLogger().debug("Success to map " + profile + " from "
+					+ contactDTO);
+			contactDTO.setId(profile.getContact().getId());
+			return profile;
+		}catch(Exception e){
+			String message = "Failed to map profile from" + contactDTO;
 			this.getLogger().error(message, e);
 			throw new PalomaException(message);
 		}
