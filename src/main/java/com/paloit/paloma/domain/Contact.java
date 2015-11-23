@@ -10,6 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 /**
  * Created by Yu on 27/10/2015.
  */
@@ -46,12 +48,14 @@ public class Contact extends BusinessEntity<Long> {
 	 * Email
 	 */
 	@Column(name = "EMAIL", length = 100)
+	@NotBlank
 	private String email;
 
 	/**
 	 * Professional email.
 	 */
 	@Column(name = "PRO_EMAIL", length = 100)
+	@NotBlank
 	private String proEmail;
 
 	/**
