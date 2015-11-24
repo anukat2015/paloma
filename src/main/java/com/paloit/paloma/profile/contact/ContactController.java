@@ -165,10 +165,14 @@ public class ContactController {
 	 * @param profile The profile to set
 	 * @throws PalomaException
 	 */
-	@RequestMapping(method=RequestMethod.DELETE)
-	public void delete(@RequestBody Profile profile)
+	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+	public void delete(@PathVariable Long id)
 			throws PalomaException{
+		Profile profile = null;
+		Contact contact = null;
 		try{
+			contact = this.contactService.find(id);
+			profile = this.profileService.getRepository().findByContact(contact);
 			profile.setIsDeleted(Boolean.TRUE);
 			this.profileService.update(profile);
 			this.getLogger().info("Success to set " + profile + " as deleted");

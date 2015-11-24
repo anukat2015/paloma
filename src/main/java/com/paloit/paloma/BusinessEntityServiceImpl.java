@@ -45,7 +45,7 @@ implements BusinessEntityService<V, W, X> {
 	@Override
 	public List<V> findAll() throws PalomaPersistenceContextException {
 		try{
-			return this.getRepository().findAll();
+			return this.findAllQuery();
 		}catch(Exception e){
 			String message = "Fail to find all " 
 					+ this.getEntityClass().getSimpleName();
@@ -110,5 +110,13 @@ implements BusinessEntityService<V, W, X> {
 	 */
 	public String toString() {
 		return this.getClass().getSimpleName();
+	}
+	
+	/**
+	 * Query used to find all entities
+	 * @return The entities
+	 */
+	protected List<V> findAllQuery(){
+		return this.getRepository().findAll();
 	}
 }

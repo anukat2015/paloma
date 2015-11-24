@@ -1,7 +1,8 @@
 package com.paloit.paloma.profile;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,6 +64,10 @@ public class ProfileServiceImpl extends BusinessEntityServiceImpl<Profile, Long,
 	@Override
 	public ProfileRepository getRepository() {
 		return this.profileRepository;
+	}
+	
+	protected List<Profile> findAllQuery() {
+		return this.getRepository().findByIsDeletedFalseOrIsDeletedNull();
 	}
 
 
