@@ -67,7 +67,7 @@ public class ProfileServiceImpl extends BusinessEntityServiceImpl<Profile, Long,
 	}
 	
 	protected List<Profile> findAllQuery() {
-		return this.getRepository().findByIsDeletedFalseOrIsDeletedNull();
+		return this.getRepository().findByIsDeletedFalseOrIsDeletedNullOrderByFirstName();
 	}
 
 

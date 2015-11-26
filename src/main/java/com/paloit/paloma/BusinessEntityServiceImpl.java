@@ -73,7 +73,7 @@ implements BusinessEntityService<V, W, X> {
 	@Override
 	public V update(V entity) throws PalomaPersistenceContextException {
 		try{
-			entity = this.getRepository().save(entity);
+			entity = this.getRepository().saveAndFlush(entity);
 			this.getLogger().debug("Success to update " + entity);
 			return entity;
 		}catch(Exception e){
