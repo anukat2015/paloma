@@ -20,7 +20,7 @@
             http://java.sun.com/xml/ns/jaxb
             http://java.sun.com/xml/ns/jaxb/bindingschema_2_0.xsd">
 
-	<context:component-scan base-package="com.paloit.paloma.*" />
+	<context:component-scan base-package="com.paloit.*" />
 
 	<!-- EntityManager integration with DBCP datasource -->
 	<bean id="entityManagerFactory"
@@ -65,5 +65,5 @@
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-	<jpa:repositories base-package="com.paloit.paloma.*" />
+	<jpa:repositories base-package="com.paloit.*" />
 </beans>

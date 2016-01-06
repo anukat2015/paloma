@@ -1,8 +1,8 @@
 package com.paloit.paloma.dto;
 
-import java.util.Date;
+import java.util.Calendar;
 
-public class ContactDTO {
+public class ContactDTO extends EntityDTO<Long> {
     private String firstName;
     private String lastName;
     private String phoneNumber;
@@ -12,7 +12,7 @@ public class ContactDTO {
     private String proEmail;
     private String city;
     private String country;
-    private Date birthDate;
+    private Calendar birthDate;
 
     public ContactDTO() {
     }
@@ -101,11 +101,18 @@ public class ContactDTO {
 		this.country = country;
 	}
 
-	public Date getBirthDate() {
+	public Calendar getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(Calendar birthDate) {
         this.birthDate = birthDate;
+    }
+    
+    /**
+     * @return Textual information of the instance
+     */
+    public String toString(){
+    	return super.toString() + " " + this.firstName + " " + this.lastName;
     }
 }

@@ -10,12 +10,19 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 /**
  * Created by Yu on 27/10/2015.
  */
 @Entity
 @Table(name="CONTACT")
 public class Contact extends BusinessEntity<Long> {
+
+	/**
+	 * The generated serial UID
+	 */
+	private static final long serialVersionUID = 7405698407789121813L;
 
 	/**
 	 * Sequence name.
@@ -41,6 +48,7 @@ public class Contact extends BusinessEntity<Long> {
 	 * Email
 	 */
 	@Column(name = "EMAIL", length = 100)
+	@NotBlank
 	private String email;
 
 	/**

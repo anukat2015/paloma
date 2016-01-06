@@ -13,7 +13,7 @@ import javax.persistence.Version;
  * @param V The type of the id
  *
  */
-public abstract class BusinessEntity<V> implements Serializable {
+public abstract class BusinessEntity<V extends Serializable> implements Serializable {
 	
 
 	/**

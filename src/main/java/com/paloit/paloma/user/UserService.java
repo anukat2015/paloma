@@ -12,7 +12,7 @@ import com.paloit.paloma.utils.exception.PalomaPersistenceContextException;
  * Service used to manage user
  *
  */
-public interface UserService extends BusinessEntityService<User, Long> {
+public interface UserService extends BusinessEntityService<User, Long, UserRepository> {
 	/**
 	 * Find in the persistence context
 	 * the user matching the user DTO

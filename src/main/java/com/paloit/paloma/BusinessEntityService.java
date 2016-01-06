@@ -3,7 +3,10 @@
  */
 package com.paloit.paloma;
 
+import java.io.Serializable;
 import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.paloit.paloma.domain.BusinessEntity;
 import com.paloit.paloma.utils.exception.PalomaPersistenceContextException;
@@ -17,7 +20,8 @@ import com.paloit.paloma.utils.exception.PalomaPersistenceContextException;
  * @param U The business entity id class
  *
  */
-public interface BusinessEntityService<T extends BusinessEntity<U>, U> {
+public interface BusinessEntityService<T extends BusinessEntity<U>
+, U extends Serializable, V extends JpaRepository<T, U>> {
 	/**
 	 * Create a business entity
 	 * @return The created business entity
@@ -52,10 +56,16 @@ public interface BusinessEntityService<T extends BusinessEntity<U>, U> {
 	 * @throws PalomaPersistenceContextException
 	 */
 	void delete(T entity) throws PalomaPersistenceContextException;
-	
+
 	/**
 	 * Return the entity class
 	 * @return The class
 	 */
 	Class<T> getEntityClass();
+
+	/**
+	 * 
+	 * @return The repository used to manage entities in persistence context
+	 */
+	V getRepository();
 }

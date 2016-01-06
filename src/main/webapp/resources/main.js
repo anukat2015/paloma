@@ -1,3 +1,73 @@
+/**
+* The profile creation panel
+*/
+var CreateProfilePanel = React.createClass({
+	/**
+	* Handle the profile submission
+	*/
+	handleSubmit : function (e) {
+		e.preventDefault();
+		var contact = {
+			firstName : $("#firstName").value,
+			lastName : this.refs.lastName.value.trim(),
+			phoneNumber : this.refs.phone.value.trim(),
+			address : this.refs.address.value.trim(),
+		};
+		$.ajax({
+			url : '/paloma/profile',
+			type : 'POST',
+			data : JSON.stringify(user),
+			dataType : 'json',
+			success : function(data){
+				console.log("Save contact success");
+			},
+			error : function(message){
+				console.error(message);
+			}
+		});
+	},
+  render : function () {
+    return (
+      <form className="form-horizontal" onSubmit={this.handleSubmit}>
+        <div className="form-group">
+          <label className="col-md-2 control-label" htmlFor="firstName">Surname *</label>
+          <input id="firstName" name="firstName" className="col-md-3" type="text" required/>
+          <label className="col-md-2 control-label" htmlFor="lastName">Name *</label>
+          <input id="lastName" className="col-md-3" type="text" required/>
+        </div>
+				<div className="form-group">
+          <label className="col-md-2 control-label" htmlFor="phone">Phone</label>
+          <input id="phone" className="col-md-3" type="text" required/>
+          <label className="col-md-2 control-label" htmlFor="address">Adress</label>
+          <input id="address" className="col-md-3" type="text"/>
+        </div>
+				<div className="form-group">
+          <label className="col-md-2 control-label" htmlFor="private_mail">Mail (private)</label>
+          <input id="private_mail" className="col-md-3" type="text"/>
+          <label className="col-md-2 control-label" htmlFor="zip_code">Zipcode</label>
+          <input id="zip_code" className="col-md-3" type="text"/>
+        </div>
+				<div className="form-group">
+          <label className="col-md-2 control-label" htmlFor="pro_mail">Mail (pro)</label>
+          <input id="pro_mail" className="col-md-3" type="text"/>
+          <label className="col-md-2 control-label" htmlFor="city">City</label>
+          <input id="city" className="col-md-3" type="text"/>
+        </div>
+				<div className="form-group">
+          <label className="col-md-2 control-label" htmlFor="birthdate">Birthdate</label>
+          <input id="birthdate" className="col-md-3" type="text"/>
+          <label className="col-md-2 control-label" htmlFor="country">Country</label>
+          <input id="country" className="col-md-3" type="text"/>
+        </div>
+				<div className="form-group">
+			    <div className="col-md-offset-2 col-md-10">
+			      <button type="submit" className="btn btn-default">Create</button>
+			    </div>
+			  </div>
+      </form>
+    );
+  }
+});
 
 /**
 * Notification panel
@@ -76,7 +146,7 @@ var LogOutPanel = React.createClass ({
 	    			<p className="navbar-text">Hello {this.props.user.firstName}</p>
 	    		</li>
 	    		<li>
-	    			<p id="logOut" className="navbar-text" onClick={this.props.logOut}>Log out</p>
+	    			<p id="logOut" className="navbar-text clickable" onClick={this.props.logOut}>Log out</p>
 	    		</li>
     		</ul>
 
@@ -128,16 +198,20 @@ var NavBar = React.createClass ({
  * Panel used to manage profile
  */
 var ProfilePanel = React.createClass ({
+	createProfile : function () {
+		return this.props.changeContextViewPanel(<CreateProfilePanel />);
+	},
 	render : function () {
 		return (
 			<div className="row">
 				<div className="col-md-4 col-md-offset-2 text-center">
-					<img className="img-rounded" alt="Create profile"
-					src='/paloma/resources/icon/user-add.png'/>
+					<img className="img-rounded clickable" alt="Create profile"
+					src='/paloma/resources/icon/user-add.png'
+					onClick={this.createProfile}/>
 					<p>Create new profile</p>
 				</div>
 				<div className="col-md-4 col-md-offset-2">
-					<img className="img-rounded" alt="Search profile"
+					<img className="img-rounded clickable" alt="Search profile"
 					src='/paloma/resources/icon/user-search.png'/>
 					<p>Search profile</p>
 					</div>
@@ -168,6 +242,15 @@ var MainPanel = React.createClass ({
 		}
 		return vars;
 	},
+
+	/**
+	* Change the current context view
+	*/
+	changeContextViewPanel : function (context) {
+		this.setState({
+			currentContextView : context
+		})
+	},
 	/**
 	* Remove the user of the current session
 	* of the application
@@ -177,7 +260,8 @@ var MainPanel = React.createClass ({
 			user : undefined,
 			authenticationPanel: <LogInPanel />,
 			loggedUserNavItems: "",
-			profilePanel: ""
+			profilePanel: "",
+			currentContextView: ""
 		});
 	},
 
@@ -187,19 +271,34 @@ var MainPanel = React.createClass ({
 			notificationPanel : <NotificationPanel alertType={alertTypeParam} message={messageParam} />
 		})
 	},
+
+	loadLoggedUserView : function () {
+		this.setState({
+			user : sessionStorage.getItem("user"),
+			loggedUserNavItems : <LoggedUserNavItems/>,
+			authenticationPanel : <LogOutPanel user={sessionStorage.getItem("user")}
+			logOut={this.logOut}/>,
+			currentContextView : <ProfilePanel
+			changeContextViewPanel={this.changeContextViewPanel} />,
+		});
+	},
 	getInitialState : function(){
 		var component = this;
 		return {
-          authenticationPanel: <LogInPanel buildNotificationPanel={component.buildNotificationPanel}/>,
+          authenticationPanel: "",
 					loggedUserNavItems: "",
 					notificationPanel : "",
-					profilePanel: ""
+					profilePanel : "",
+					currentContextView : ""
 		};
 	},
 	componentDidMount: function (){
 		var component = this;
 		var authenticationCode = this.getUrlParam('code');
-		if(authenticationCode != undefined && this.user == undefined){
+		console.log(sessionStorage.getItem("user"));
+		if(sessionStorage.getItem("user") != null){
+			component.loadLoggedUserView();
+		}else if(authenticationCode != undefined) {
 			/**
 			* Loading the user from Paloma WS
 			*/
@@ -207,24 +306,27 @@ var MainPanel = React.createClass ({
 				url : "/paloma/authentication?code=" + authenticationCode,
 				dataType : "json",
 				success : function(data){
-					component.setState({
-						user : data,
-						loggedUserNavItems : <LoggedUserNavItems/>,
-	          authenticationPanel : <LogOutPanel user={data} logOut={component.logOut}/>,
-						profilePanel : <ProfilePanel />
-					});
-				}
-			,
+					sessionStorage.setItem("user", data);
+					component.loadLoggedUserView();
+				},
 				error : function () {
 					component.setState({
+						authenticationPanel : <LogInPanel
+						buildNotificationPanel={this.buildNotificationPanel} />,
 						notificationPanel : <NotificationPanel alertType="danger"
-						message="Oops. We are unable to get your Google profile. Are \
-						you a Palo-IT member ? If you are,	please contact the administrator" />
+						message={"Oops. We are unable to get your Google profile. Are \
+						you a Palo-IT member ? If you are,	please contact the administrator"} />
 					})
 				}
 
 			})
+		}else{
+			component.setState({
+				authenticationPanel : <LogInPanel
+				buildNotificationPanel={this.buildNotificationPanel} />
+			});
 		}
+
 	},
 	render: function () {
 		return (
@@ -243,7 +345,7 @@ var MainPanel = React.createClass ({
 					{this.state.notificationPanel}
 				</div>
 			</div>
-			{ this.state.profilePanel }
+			{ this.state.currentContextView }
 		</div>
 		);
 	}

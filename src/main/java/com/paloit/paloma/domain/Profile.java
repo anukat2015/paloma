@@ -1,5 +1,6 @@
 package com.paloit.paloma.domain;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -9,10 +10,10 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -20,6 +21,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.paloit.paloma.utils.enums.StaffingStatus;
 import com.paloit.paloma.utils.enums.StatusContact;
@@ -27,206 +33,219 @@ import com.paloit.paloma.utils.enums.StatusRecruitment;
 import com.paloit.paloma.utils.enums.TypeSourcing;
 
 @Entity
-@Table(name="PROFILE")
-public class Profile {
+@Table(
+		name="PROFILE",
+		uniqueConstraints = {
+				@UniqueConstraint(columnNames={"FIRST_NAME", "LAST_NAME"})
+		}
+)
+public class Profile extends BusinessEntity<Long> {
 	/**
-     * Sequence name.
-     */
-    private static final String SEQUENCENAME = "SEQUENCE_PROFILE";
-  
+	 * The generated serial UID
+	 */
+	private static final long serialVersionUID = -5391998537911235000L;
+
+	/**
+	 * Sequence name.
+	 */
+	private static final String SEQUENCENAME = "SEQUENCE_PROFILE";
+
 	/**
 	 * Profile id.
 	 */
-    @Id
-    @SequenceGenerator(name = SEQUENCENAME, sequenceName = SEQUENCENAME, initialValue = 1, allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQUENCENAME)
-    @Column(name = "ID_PROFILE", length = 10)
-    private Long id;
-    
-    /**
-     * Title of the profile.
-     */
-    @Column(name = "TITLE", length = 100)
-    private String title;
-    
-    /**
-     * List of skills.
-     */
-    @ManyToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+	@Id
+	@SequenceGenerator(name = SEQUENCENAME, sequenceName = SEQUENCENAME, initialValue = 1, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQUENCENAME)
+	@Column(name = "ID_PROFILE", length = 10)
+	private Long id;
+
+	/**
+	 * Title of the profile.
+	 */
+	@Column(name = "TITLE", length = 100)
+	private String title;
+
+	/**
+	 * List of skills.
+	 */
+	@ManyToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "PROFILE_SKILL", joinColumns={@JoinColumn(name="ID_PROFILE", referencedColumnName="ID_PROFILE")},
-		      inverseJoinColumns={@JoinColumn(name="ID_SKILL", referencedColumnName="ID_SKILL")})    
-    private List<Skill> skills;
-    
-    /**
-     * Drive doc id.
-     */
-    @Column(name = "ID_DRIVE_DOC", length = 100)
-    private String idDriveDoc;
-    
-    /**
-     * Type of contract.
-     */
-    @Enumerated(EnumType.STRING)
-    @Column(name="STATUS_RECRUITMENT")
-    private StatusRecruitment statusRecruitment;
-    
-    /**
-     * To contact or not anymore.
-     */
-    @Enumerated(EnumType.STRING)
-    @Column(name="STATUS_CONTACT")
-    private StatusContact statusContact;
-    
-    /**
-     * Number of experiences.
-     */
-    @Column(name = "EXPERIENCE", length = 3)
-    private Integer experience;
-    
-    /**
-     * Source of the profiles.
-     */
-    @ManyToOne
-    @JoinColumn(name = "ID_SOURCE")
-    private Source source;
-    
-    /**
-     * Sourcing Type.
-     */
-    @Enumerated(EnumType.STRING)
-    @Column(name="TYPE_SOURCING")
-    private TypeSourcing typeSourcing;
-    
-    /**
-     * Notice Prior.
-     */
-    @Column(name = "NOTICE_PRIOR", length = 50)
-    private String noticePrior;
-    
-    /**
-     * Date of availability.
-     */
-    @Column(name = "DATE_AVAILABLE")
-    private Date dateAvailable;
-    
-    /**
-     * Mobility.
-     */
-    @Column(name = "MOBILITY", length = 100)
-    private String mobility;
-    
-    /**
-     * Salary wished by the profile.
-     */
-    @Column(name="SALARY_WISH", length=10)
-    private Long salaryWish;
-    
-    /**
-     * Minimum daily rate.
-     */
-    @Column(name="MIN_AVERAGE_DAILY_RATE", length=5)
-    private Long minAverageDailyRate;
-    
-    /**
-     * Available or in mission.
-     */
-    @Enumerated(EnumType.STRING)
-    @Column(name="STAFFING_STATUS")
-    private StaffingStatus staffingStatus;
-    
-    /**
-     * Most significant diploma of the profile.
-     */
-    @Column(name="DIPLOMA", length=100)
-    private String diploma;
-    
-    /**
-     * Date of the diploma.
-     */
-    @Column(name="DATE_DIPLOMA")
-    private Date diplomaDate;
-    
-    /**
-     * First name of the profile.
-     */
-    @Column(name="FIRST_NAME", length=100)
-    private String firstName;
-    
-    /**
-     * Last name of the profile.
-     */
-    @Column(name="LAST_NAME", length=100)
-    private String lastName;
-    
-    /**
-     * Birth date of the profile.
-     */
-    @Column(name="DATE_BIRTH")
-    private Date birthDate;
-    
-    /**
-     * contact.
-     */
-    @OneToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name = "ID_CONTACT")
-    private Contact contact;
+	inverseJoinColumns={@JoinColumn(name="ID_SKILL", referencedColumnName="ID_SKILL")})    
+	private List<Skill> skills;
 
-    /**
-     * List of interview.
-     */
-    @OneToMany(fetch=FetchType.LAZY, mappedBy = "profile",cascade=CascadeType.ALL)
-    private List<Interview> interviews;
-    
-    /**
-     * Qualification id.
-     */
-    @Column(name = "ID_QUALIFICATION", length = 100)
-    private String idQualification;
-    
-    /**
-     * Test id.
-     */
-    @Column(name = "ID_TEST", length = 100)
-    private String idTest;
+	/**
+	 * Drive doc id.
+	 */
+	@Column(name = "ID_DRIVE_DOC", length = 100)
+	private String idDriveDoc;
 
-    /**
-     * Source of the profiles.
-     */
-    @OneToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name = "ID_CONTRACT")
-    private Contract contract;
+	/**
+	 * Type of contract.
+	 */
+	@Enumerated(EnumType.STRING)
+	@Column(name="STATUS_RECRUITMENT")
+	private StatusRecruitment statusRecruitment;
 
-    /**
-     * CAREER Historical.
-     */
-    @OneToMany(fetch=FetchType.LAZY, mappedBy = "profile" ,cascade=CascadeType.ALL)
-    private List<Staffing> staffings;
+	/**
+	 * To contact or not anymore.
+	 */
+	@Enumerated(EnumType.STRING)
+	@Column(name="STATUS_CONTACT")
+	private StatusContact statusContact;
 
-    /**
-     * List of languages
-     */
-    @OneToMany(mappedBy="profileLanguageId.profile", cascade=CascadeType.ALL)
-    private List<ProfileLanguage> profileLanguages;
-    
-    
-    /**
-     * Profile deleted.
-     */
-    @Column(name = "IS_DELETED")
-    private Boolean isDeleted;
-    
-    /**
-     * Modified date.
-     */
-    @Column(name = "DATE_MODIFIED")
-    private Date modifiedDate;
-    
-    /**
-     * Last user who has edited the profile.
-     */
-    @ManyToOne
-    @JoinColumn(name = "ID_USER")
-    private User user;
+	/**
+	 * Number of experiences.
+	 */
+	@Column(name = "EXPERIENCE", length = 3)
+	private Integer experience;
+
+	/**
+	 * Source of the profiles.
+	 */
+	@ManyToOne
+	@JoinColumn(name = "ID_SOURCE")
+	private Source source;
+
+	/**
+	 * Sourcing Type.
+	 */
+	@Enumerated(EnumType.STRING)
+	@Column(name="TYPE_SOURCING")
+	private TypeSourcing typeSourcing;
+
+	/**
+	 * Notice Prior.
+	 */
+	@Column(name = "NOTICE_PRIOR", length = 50)
+	private String noticePrior;
+
+	/**
+	 * Date of availability.
+	 */
+	@Column(name = "DATE_AVAILABLE")
+	private Date dateAvailable;
+
+	/**
+	 * Mobility.
+	 */
+	@Column(name = "MOBILITY", length = 100)
+	private String mobility;
+
+	/**
+	 * Salary wished by the profile.
+	 */
+	@Column(name="SALARY_WISH", length=10)
+	private Long salaryWish;
+
+	/**
+	 * Minimum daily rate.
+	 */
+	@Column(name="MIN_AVERAGE_DAILY_RATE", length=5)
+	private Long minAverageDailyRate;
+
+	/**
+	 * Available or in mission.
+	 */
+	@Enumerated(EnumType.STRING)
+	@Column(name="STAFFING_STATUS")
+	private StaffingStatus staffingStatus;
+
+	/**
+	 * Most significant diploma of the profile.
+	 */
+	@Column(name="DIPLOMA", length=100)
+	private String diploma;
+
+	/**
+	 * Date of the diploma.
+	 */
+	@Column(name="DATE_DIPLOMA")
+	private Date diplomaDate;
+
+	/**
+	 * First name of the profile.
+	 */
+	@Column(name="FIRST_NAME", length=100)
+	@NotBlank
+	private String firstName;
+
+	/**
+	 * Last name of the profile.
+	 */
+	@Column(name="LAST_NAME", length=100)
+	@NotBlank
+	private String lastName;
+
+	/**
+	 * Birth date of the profile.
+	 */
+	@Column(name="DATE_BIRTH")
+	@Temporal(TemporalType.DATE)
+	private Calendar birthDate;
+
+	/**
+	 * contact.
+	 */
+	@OneToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@JoinColumn(name = "ID_CONTACT")
+	private Contact contact;
+
+	/**
+	 * List of interview.
+	 */
+	@OneToMany(fetch=FetchType.LAZY, mappedBy = "profile",cascade=CascadeType.ALL)
+	private List<Interview> interviews;
+
+	/**
+	 * Qualification id.
+	 */
+	@Column(name = "ID_QUALIFICATION", length = 100)
+	private String idQualification;
+
+	/**
+	 * Test id.
+	 */
+	@Column(name = "ID_TEST", length = 100)
+	private String idTest;
+
+	/**
+	 * Source of the profiles.
+	 */
+	@OneToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name = "ID_CONTRACT")
+	private Contract contract;
+
+	/**
+	 * CAREER Historical.
+	 */
+	@OneToMany(fetch=FetchType.LAZY, mappedBy = "profile" ,cascade=CascadeType.ALL)
+	private List<Staffing> staffings;
+
+	/**
+	 * List of languages
+	 */
+	@OneToMany(cascade=CascadeType.ALL)
+	private List<ProfileLanguage> profileLanguages;
+
+
+	/**
+	 * Profile deleted.
+	 */
+	@Column(name = "IS_DELETED")
+	private Boolean isDeleted;
+
+	/**
+	 * Modified date.
+	 */
+	@Column(name = "DATE_MODIFIED")
+	private Calendar modifiedDate;
+
+	/**
+	 * Last user who has edited the profile.
+	 */
+	@ManyToOne
+	@JoinColumn(name = "ID_USER")
+	private User user;
 
 	/**
 	 * @return the id
@@ -469,17 +488,17 @@ public class Profile {
 	/**
 	 * @return the birthDate
 	 */
-	public Date getBirthDate() {
+	public Calendar getBirthDate() {
 		return birthDate;
 	}
 
 	/**
 	 * @param birthDate the birthDate to set
 	 */
-	public void setBirthDate(Date birthDate) {
+	public void setBirthDate(Calendar birthDate) {
 		this.birthDate = birthDate;
 	}
-	
+
 	/**
 	 * @return the interviews
 	 */
@@ -564,7 +583,7 @@ public class Profile {
 		this.contract = contract;
 	}
 
-	
+
 	/**
 	 * @return the staffings
 	 */
@@ -596,14 +615,14 @@ public class Profile {
 	/**
 	 * @return the modifiedDate
 	 */
-	public Date getModifiedDate() {
+	public Calendar getModifiedDate() {
 		return modifiedDate;
 	}
 
 	/**
 	 * @param modifiedDate the modifiedDate to set
 	 */
-	public void setModifiedDate(Date modifiedDate) {
+	public void setModifiedDate(Calendar modifiedDate) {
 		this.modifiedDate = modifiedDate;
 	}
 
@@ -649,6 +668,6 @@ public class Profile {
 		return contact;
 	}
 
-	
-	
+
+
 }

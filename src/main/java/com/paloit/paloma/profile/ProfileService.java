@@ -1,11 +1,8 @@
 package com.paloit.paloma.profile;
 
-import java.sql.Date;
-import java.util.List;
-
+import com.paloit.paloma.BusinessEntityService;
 import com.paloit.paloma.domain.Contact;
 import com.paloit.paloma.domain.Profile;
-import com.paloit.paloma.dto.ContactDTO;
 import com.paloit.paloma.dto.SkillDTO;
 
 /**
@@ -13,22 +10,7 @@ import com.paloit.paloma.dto.SkillDTO;
  * @author DTRANG
  *
  */
-public interface ProfileService {
-	
-	/**
-	 * Create a profile in a contact.
-	 * @param id
-	 * @return
-	 */
-	String createContact(ContactDTO contactDTO);
-	
-	/**
-	 * Update a profile in a contact.
-	 * @param id
-	 * @return
-	 */
-	String updateContact(ContactDTO contactDTO);
-	
+public interface ProfileService extends BusinessEntityService<Profile, Long, ProfileRepository>  {	
 	/**
 	 * Update the skills.
 	 * @param id
@@ -36,14 +18,6 @@ public interface ProfileService {
 	 * @return
 	 */
 	Profile updateSkill(Long id, SkillDTO skillDTO);
-	
-	/**
-	 * Find a profile with the same name and lastname.
-	 * @param firstName
-	 * @param lastName
-	 * @return
-	 */
-	Profile findByFirstNameAndLastName(String firstName, String lastName);
 
 	/**
 	 * Find contacts for one profile.

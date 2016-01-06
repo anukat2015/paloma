@@ -26,4 +26,8 @@ public interface ProfileRepository  extends JpaRepository<Profile, Long>,JpaSpec
 	
 	
 	Profile findByFirstNameAndLastName(String firstName,String lastName);
+	
+	Profile findByContact(Contact contact);
+	
+	List<Profile> findByIsDeletedFalseOrIsDeletedNullOrderByFirstName();
 }

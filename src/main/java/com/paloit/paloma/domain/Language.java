@@ -43,7 +43,7 @@ public class Language {
     /**
      * List of profile.
      */
-    @OneToMany(mappedBy="profileLanguageId.language" ,cascade=CascadeType.ALL)
+    @OneToMany(cascade=CascadeType.ALL)
     private List<ProfileLanguage> profileLanguages;
 	
     /**

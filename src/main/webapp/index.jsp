@@ -14,6 +14,7 @@
 <script src='<c:url value="/resources/bootstrap-3.3.5-dist/bootstrap-3.3.5-dist/js/bootstrap.min.js"/>'></script>
 <script type="text/babel" src='<c:url value="/resources/main.js"/>'></script>
 
+
 </head>
 <body>
 	<div id="main"></div>
